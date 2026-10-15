@@ -6,7 +6,7 @@ name: Fork release
 on:
   push:
     branches: [custom]
-    paths-ignore: ["**.md", "docs/**"]
+    paths-ignore: ["**.md", "docs/**", ".github/**"]
   workflow_dispatch:
 
 permissions:
