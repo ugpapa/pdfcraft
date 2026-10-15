@@ -1,96 +1,70 @@
-> **ugpapa/pdfcraft fork** — the `custom` branch is upstream `main` plus:
-> - a Korean interface (한국어 화면 언어), merged from upstream PR #2357, and the installed Hangul font fallback (Malgun Gothic / Apple SD Gothic Neo / Nanum Gothic), so Korean file names no longer render as boxes;
-> - a different flat app icon;
-> - the ArtCraft trademarks removed, as the upstream brand licence requires of forks.
->
-> Build: `cargo build --release -p pdfcraft`. Upstream: <https://github.com/storytold/pdfcraft>.
-
-<h1 align="center">PdfCraft</h1>
+<h1 align="center">PdfCraft 한국어판</h1>
 
 <p align="center">
-  <b>The PDF workbench; an open-source, clean-room reimplementation of Adobe Acrobat, rebuilt in pure Rust.</b><br>
-  Read, organize, combine, split and secure PDFs in a fast, native app, written in Rust from the ground up.<br>
-  macOS · Windows · Linux · FreeBSD · the web
+  <b>PDF 작업대 — Adobe Acrobat을 순수 Rust로 처음부터 다시 만든 오픈 소스 클린룸 구현</b><br>
+  빠른 네이티브 앱에서 PDF를 읽고, 정리하고, 합치고, 나누고, 보호합니다.<br>
+  macOS · Windows · Linux · FreeBSD · 웹
 </p>
 
 <p align="center">
-  <img alt="License: MIT OR Apache-2.0" src="https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-12a58a">
-  <img alt="Written in Rust" src="https://img.shields.io/badge/written%20in-Rust-0a7563">
-  <img alt="Platforms: macOS, Windows, Linux, FreeBSD, web" src="https://img.shields.io/badge/runs%20on-macOS%20%C2%B7%20Windows%20%C2%B7%20Linux%20%C2%B7%20FreeBSD%20%C2%B7%20web-12a58a">
-  <img alt="No account, no telemetry" src="https://img.shields.io/badge/no%20account-no%20telemetry-0a7563">
+  <img alt="License: MIT OR Apache-2.0" src="https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-c42430">
+  <img alt="Written in Rust" src="https://img.shields.io/badge/written%20in-Rust-1e2028">
+  <img alt="한국어 지원" src="https://img.shields.io/badge/%ED%95%9C%EA%B5%AD%EC%96%B4-%EC%A7%80%EC%9B%90-c42430">
+  <img alt="계정·원격 수집 없음" src="https://img.shields.io/badge/%EA%B3%84%EC%A0%95%C2%B7%EC%9B%90%EA%B2%A9%EC%88%98%EC%A7%91-%EC%97%86%EC%9D%8C-1e2028">
 </p>
 
 <p align="center">
-  <a href="https://discord.gg/artcraft"><img alt="Join the ArtCraft community on Discord" src="https://img.shields.io/badge/Join%20us%20on%20Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" height="40"></a>
-</p>
-
-<p align="center">
-  <a href="https://getartcraft.com/apps/pdfcraft"><b>PdfCraft on getartcraft.com</b></a> ·
-  <a href="https://getartcraft.com/">ArtCraft</a> ·
-  <a href="https://getartcraft.com/apps">All Crafting Apps</a>
+  <a href="https://github.com/ugpapa/pdfcraft/releases/latest"><b>⬇ 최신 버전 내려받기 (Windows · macOS)</b></a> ·
+  <a href="README.en.md">English README</a> ·
+  <a href="https://github.com/storytold/pdfcraft">원본 저장소</a>
 </p>
 
 <br>
 
 <p align="center">
-  <img src="docs/images/pdfcraft-viewer.png" alt="PdfCraft with the PdfCraft Showcase cover page open, the All tools panel on the left and 20 threaded comments on the right" width="100%">
+  <img src="docs/images/pdfcraft-viewer.png" alt="PdfCraft 쇼케이스 표지를 연 화면. 왼쪽에 모든 도구 패널, 오른쪽에 20개의 댓글 스레드" width="100%">
   <br>
-  <sub>The PdfCraft Showcase, a 13-page specimen PDF, open with the All tools panel and threaded comments.</sub>
-</p>
-
-> [!NOTE]
-> **ArtCraft is a community of artists from all walks of life.** Digital, generative, music,
-> games &mdash; if you make things, you're one of us. **[Come say hi on Discord](https://discord.gg/artcraft).**
-
-<p align="center">
-  <a href="#highlights">Highlights</a> ·
-  <a href="#read-anything-beautifully">Read</a> ·
-  <a href="#find-it-select-it-copy-it">Find</a> ·
-  <a href="#organize-pages-like-cards-on-a-table">Organize</a> ·
-  <a href="#combine-and-split-without-losing-a-thing">Combine &amp; split</a> ·
-  <a href="#open-protected-documents-and-respect-their-rules">Protect</a> ·
-  <a href="#comments-forms-layers-and-attachments">Forms &amp; layers</a> ·
-  <a href="#runs-everywhere-stays-yours">Everywhere</a> ·
-  <a href="#built-for-agents-too">Agents</a> ·
-  <a href="#how-its-built">How it's built</a> ·
-  <a href="#get-started">Get started</a> ·
-  <a href="#whats-next">What's next</a> ·
-  <a href="#downloads">Downloads</a> ·
-  <a href="#the-crafting-apps">Crafting Apps</a>
+  <sub>13쪽짜리 견본 PDF인 PdfCraft 쇼케이스를 모든 도구 패널, 댓글 스레드와 함께 연 모습</sub>
 </p>
 
 ---
 
-## Community
+## 🇰🇷 이 포크에서 달라진 점: 한국어 추가
 
-PdfCraft is part of [ArtCraft](https://getartcraft.com). Come say hello, get help and follow development:
+이 저장소는 [storytold/pdfcraft](https://github.com/storytold/pdfcraft)의 포크입니다. 기본 브랜치 `custom`은 원본 `main`에 다음을 더한 것입니다.
 
-- **Discord: [discord.gg/artcraft](https://discord.gg/artcraft)**. This is the fastest way to get help and share feedback. The app has a Discord button in its title bar.
-- **Web page:** [getartcraft.com/apps/pdfcraft](https://getartcraft.com/apps/pdfcraft)
-- **Source:** [github.com/storytold/pdfcraft](https://github.com/storytold/pdfcraft)
+- **한국어 화면 언어 추가.** 메뉴, 도구, 대화 상자, 패널, 단축키 설명까지 한국어로 나옵니다. 원본에 올라와 있는 한국어 번역 PR [#2357](https://github.com/storytold/pdfcraft/pull/2357)을 최신 `main`에 합쳤습니다.
+  - 켜는 법: **메뉴 → 편집 → 환경설정…** (macOS는 <kbd>⌘,</kbd>, 그 밖에는 <kbd>Ctrl+,</kbd>) → **화면 언어 → 한국어**
+- **한글 글꼴 대체.** 원본은 한글 글꼴이 없어 한글 파일 이름, 책갈피, 탭 제목이 □□□로 깨졌습니다. 이제 컴퓨터에 설치된 한글 글꼴을 찾아 씁니다.
+  - Windows: 맑은 고딕 → 굴림 → 바탕
+  - macOS: Apple SD 산돌고딕 Neo → AppleGothic
+  - Linux: 나눔고딕 → 은돋움 → 백묵 굴림
+- **새 앱 아이콘.** 작은 크기에서도 알아보기 쉬운 평면 아이콘으로 바꿨습니다.
+- **ArtCraft 상표 제거.** 원본의 브랜드 라이선스가 포크에서는 ArtCraft 로고를 빼도록 요구하므로 로고 파일과 앱 안의 로고를 지웠습니다.
+- **자동 릴리스.** `custom`에 변경이 올라올 때마다 GitHub Actions가 Windows·macOS 빌드를 만들어 [릴리스](https://github.com/ugpapa/pdfcraft/releases)에 올립니다.
 
-The ArtCraft name and logos in `docs/brand/` are trademarks of the ArtCraft Team and are not open source. They may be used only unmodified, and only as part of PdfCraft (see `docs/brand/LICENSE-brand.txt`). Forks and modified versions must remove them.
+---
 
-## Highlights
+## 주요 특징
 
 <table>
 <tr>
 <td width="33%" valign="top">
 
-### Faithful
-Real-world typography: world scripts, vertical Japanese, colour emoji, gradients, soft masks and transparency. All of it renders the way the author intended.
+### 충실하게
+실제 문서의 조판을 그대로: 세계 여러 문자, 일본어 세로쓰기, 컬러 이모지, 그라데이션, 소프트 마스크와 투명도까지 작성자가 의도한 대로 그립니다.
 
 </td>
 <td width="33%" valign="top">
 
-### Fearless
-Every save appends your changes and leaves the original bytes untouched. Writes are atomic, undo runs deep, and nothing is lost if you close by mistake.
+### 안심하고
+저장할 때마다 변경 내용만 덧붙이고 원본 바이트는 건드리지 않습니다. 쓰기는 원자적이고, 실행 취소는 깊이 있으며, 실수로 닫아도 잃는 것이 없습니다.
 
 </td>
 <td width="33%" valign="top">
 
-### Yours
-No account, no telemetry, no cloud. It works offline and opens instantly. The engine, CLI and app are all open source.
+### 내 것으로
+계정도, 원격 수집도, 클라우드도 없습니다. 오프라인에서 동작하고 바로 열립니다. 엔진, CLI, 앱 모두 오픈 소스입니다.
 
 </td>
 </tr>
@@ -98,101 +72,101 @@ No account, no telemetry, no cloud. It works offline and opens instantly. The en
 
 ---
 
-## Read anything, beautifully
+## 무엇이든 아름답게 읽기
 
-PdfCraft renders PDFs with care for the details that make a page feel right: kerning and ligatures, right-to-left and complex scripts, vertical CJK, colour emoji, shadings, blend modes, soft masks and optional content.
+커닝과 합자, 오른쪽에서 왼쪽으로 쓰는 문자와 복잡한 문자, CJK 세로쓰기, 컬러 이모지, 셰이딩, 혼합 모드, 소프트 마스크, 선택적 콘텐츠까지 페이지를 제대로 보이게 하는 세부를 신경 써서 그립니다.
 
 <p align="center">
-  <img src="docs/images/pdfcraft-scripts.png" alt="The Scripts of the World page: Arabic, Hebrew, Devanagari, Thai, Greek, Cyrillic, Chinese, Korean, IPA, Armenian, Georgian and Tamil samples, with vertical Japanese in the right margin" width="100%">
+  <img src="docs/images/pdfcraft-scripts.png" alt="세계의 문자 페이지: 아랍어, 히브리어, 데바나가리, 태국어, 그리스어, 키릴 문자, 중국어, 한국어, IPA, 아르메니아어, 조지아어, 타밀어 견본과 오른쪽 여백의 일본어 세로쓰기" width="100%">
   <br>
-  <sub>Twelve writing systems on one page, plus vertical Japanese, at 125%.</sub>
+  <sub>한 페이지에 열두 가지 문자 체계와 일본어 세로쓰기, 125% 배율</sub>
 </p>
 
-- **Deep zoom stays sharp.** Large pages render in tiles, so text stays crisp at any magnification.
-- **Built to survive bad files.** Every page renders in isolation and damaged documents are repaired. Across the 983-file pdf.js test corpus the result is 0 crashes.
-- **Layouts for every task:** continuous, single page, two-up, view rotation, full screen and a distraction-free Read mode.
-- **Light and dark themes**, both designed to be easy on the eyes for long sessions.
+- **크게 확대해도 선명합니다.** 큰 페이지는 타일로 나눠 그리므로 어떤 배율에서도 글자가 또렷합니다.
+- **망가진 파일에도 버팁니다.** 페이지마다 따로 그리고 손상된 문서는 복구합니다. pdf.js 테스트 파일 983개에서 충돌 0건입니다.
+- **작업에 맞는 보기:** 연속, 한 쪽씩, 두 쪽 펼침, 보기 회전, 전체 화면, 방해 없는 읽기 모드.
+- **밝은 테마와 어두운 테마** 모두 오래 봐도 눈이 편하도록 디자인했습니다.
 
 <table>
 <tr>
-<td width="50%"><img src="docs/images/pdfcraft-twoup.png" alt="Two facing pages in Read mode with the dark theme: the Foreword and the Setting Text chapter with its drop cap and pull quote"></td>
-<td width="50%"><img src="docs/images/pdfcraft-dark.png" alt="The dark theme showing the Code and Images chapter, a syntax-coloured listing and a fractal image, with the comments panel open"></td>
+<td width="50%"><img src="docs/images/pdfcraft-twoup.png" alt="어두운 테마의 읽기 모드에서 마주 보는 두 쪽"></td>
+<td width="50%"><img src="docs/images/pdfcraft-dark.png" alt="댓글 패널을 연 어두운 테마"></td>
 </tr>
 <tr>
-<td align="center"><sub>Two-up Read mode, ready for long reading</sub></td>
-<td align="center"><sub>The dark theme, with the comments panel open</sub></td>
+<td align="center"><sub>긴 글 읽기에 알맞은 두 쪽 읽기 모드</sub></td>
+<td align="center"><sub>댓글 패널을 연 어두운 테마</sub></td>
 </tr>
 </table>
 
-## Find it, select it, copy it
+## 찾고, 선택하고, 복사하기
 
-Search the whole document as you type, step through matches with <kbd>⌘G</kbd>, and select text that comes out in the right reading order. That holds for columns, right-to-left runs and CJK too.
+입력하는 대로 문서 전체를 검색하고, <kbd>⌘G</kbd>로 결과를 하나씩 넘기며, 올바른 읽기 순서로 텍스트를 선택합니다. 단 나누기, 오른쪽→왼쪽 문자, CJK에서도 마찬가지입니다.
 
-## Navigate long documents
+## 긴 문서 탐색
 
-Right-click a PDF tab to close it, reopen the last closed file-backed tab, or reveal its file. Closing still asks about unsaved changes. Reopening reads the saved file from disk; it does not restore discarded edits. Reveal selects the file in Explorer or Finder. On Linux and FreeBSD it requests `org.freedesktop.FileManager1.ShowItems`, falling back to opening the containing directory with `xdg-open` when that service is unavailable. Reopen and Reveal are unavailable on the web; Reveal is also unavailable for pathless documents.
+PDF 탭을 오른쪽 클릭하면 탭 닫기, 마지막으로 닫은 탭 다시 열기, 파일 위치 열기를 할 수 있습니다. 저장하지 않은 변경이 있으면 닫기 전에 묻습니다. 다시 열기는 디스크에 저장된 파일을 읽으며, 버린 편집을 되살리지는 않습니다. 파일 위치 열기는 탐색기나 Finder에서 해당 파일을 선택합니다. Linux와 FreeBSD에서는 `org.freedesktop.FileManager1.ShowItems`를 요청하고, 안 되면 `xdg-open`으로 폴더를 엽니다. 웹 버전에서는 다시 열기와 파일 위치 열기를 쓸 수 없고, 경로가 없는 문서도 파일 위치 열기를 쓸 수 없습니다.
 
-Bookmarks, page thumbnails and the document's own page labels (i, ii, 1, 2…) keep you oriented in long documents. Search bookmark titles in the Bookmarks panel to find nested entries even when their parents are collapsed. Matches keep their ancestors for context; Clear restores the unfiltered tree without changing its expansion state.
+책갈피, 쪽 미리보기, 문서 고유의 쪽 번호(i, ii, 1, 2…)로 긴 문서에서도 위치를 잃지 않습니다. 책갈피 패널에서 제목을 검색하면 부모 항목이 접혀 있어도 안쪽 항목을 찾습니다. 찾은 항목은 맥락을 위해 상위 항목과 함께 보이고, 지우기를 누르면 펼침 상태를 바꾸지 않은 채 원래 트리로 돌아갑니다.
 
 <table>
 <tr>
-<td width="50%"><img src="docs/images/pdfcraft-find.png" alt="The find bar showing match 10 of 16 for the word 'type', highlighted in the Expressive Type chapter heading"></td>
-<td width="50%"><img src="docs/images/pdfcraft-bookmarks.png" alt="The Bookmarks panel showing the nested outline of the showcase, with page labels such as Cover, i and ii, next to the Scripts of the World page"></td>
+<td width="50%"><img src="docs/images/pdfcraft-find.png" alt="찾기 막대에 16개 중 10번째 결과가 강조된 모습"></td>
+<td width="50%"><img src="docs/images/pdfcraft-bookmarks.png" alt="중첩된 책갈피와 문서 고유의 쪽 번호"></td>
 </tr>
 <tr>
-<td align="center"><sub>Find as you type: match 10 of 16</sub></td>
-<td align="center"><sub>Nested bookmarks with the document's own page labels</sub></td>
+<td align="center"><sub>입력하는 대로 찾기: 16개 중 10번째</sub></td>
+<td align="center"><sub>문서 고유의 쪽 번호가 붙은 중첩 책갈피</sub></td>
 </tr>
 </table>
 
 ---
 
-## Organize pages like cards on a table
+## 탁자 위의 카드처럼 쪽 정리
 
-Open **Organize pages** to see every page at once:
-- **Select pages:** click, <kbd>⌘</kbd>-click or <kbd>⇧</kbd>-click.
-- **Change them:** rotate, delete, insert blank pages, insert pages from another file, and move them earlier or later.
-- **Undo anything:** <kbd>⌘Z</kbd>, then save.
+**쪽 정리**를 열면 모든 쪽이 한눈에 보입니다.
+- **쪽 선택:** 클릭, <kbd>⌘</kbd>-클릭, <kbd>⇧</kbd>-클릭
+- **쪽 바꾸기:** 회전, 삭제, 빈 쪽 넣기, 다른 파일에서 쪽 넣기, 앞뒤로 옮기기
+- **무엇이든 되돌리기:** <kbd>⌘Z</kbd> 후 저장
 
 <p align="center">
-  <img src="docs/images/pdfcraft-organize.png" alt="The Organize pages grid with the showcase's pages as thumbnails, three of them selected, and the page toolbar above" width="100%">
+  <img src="docs/images/pdfcraft-organize.png" alt="쇼케이스의 쪽들이 미리보기로 나열되고 세 쪽이 선택된 쪽 정리 화면" width="100%">
   <br>
-  <sub>Organize pages with three pages selected and the page tools in the toolbar above.</sub>
+  <sub>세 쪽을 선택하고 위쪽 도구 막대에 쪽 도구가 보이는 쪽 정리 화면</sub>
 </p>
 
 <table>
 <tr>
 <td width="50%" valign="top">
 
-**Undo that goes the distance.** Each change is one step in a history you can walk backwards and forwards. The Edit menu names the step ("Undo Rotate pages"), and undo still works after you save.
+**끝까지 가는 실행 취소.** 변경 하나하나가 앞뒤로 오갈 수 있는 기록의 한 단계입니다. 편집 메뉴에 단계 이름("쪽 회전 실행 취소")이 표시되고, 저장한 뒤에도 실행 취소가 됩니다.
 
-**Saves you can trust:**
-- *Incremental:* the original bytes stay byte-for-byte intact.
-- *Atomic:* the file is written to a temporary copy, then swapped in.
-- *Verified:* independently checked with qpdf, on every CI run.
+**믿을 수 있는 저장:**
+- *증분 저장:* 원본 바이트를 한 바이트도 바꾸지 않습니다.
+- *원자적 쓰기:* 임시 사본에 쓴 다음 바꿔 넣습니다.
+- *검증:* CI가 돌 때마다 qpdf로 따로 확인합니다.
 
-When open documents exceed the window width, scroll over the tab strip with the mouse wheel or trackpad, or use its horizontal scrollbar. Opening or switching to a document brings its tab into view.
+열린 문서가 창 너비를 넘으면 탭 막대 위에서 마우스 휠이나 트랙패드로 스크롤하거나 가로 스크롤 막대를 쓰세요. 문서를 열거나 바꾸면 그 탭이 보이는 위치로 옵니다.
 
-Unsaved documents carry a dot on their tab, and closing or quitting asks before anything is lost. Changes are autosaved every minute. If PdfCraft ever quits unexpectedly, it offers to recover your work the next time it opens. Encrypted documents stay encrypted on disk.
+저장하지 않은 문서는 탭에 점이 붙고, 닫거나 종료할 때 잃기 전에 묻습니다. 변경 내용은 1분마다 자동 저장되며, PdfCraft가 갑자기 꺼지면 다음에 열 때 작업을 복구할지 묻습니다. 암호화된 문서는 디스크에서도 암호화된 채로 남습니다.
 
 </td>
-<td width="50%" valign="top"><img src="docs/images/pdfcraft-split.png" alt="The Split document dialog over the organize view, set to one page per file and reporting that it creates 13 files from 13 pages"><br><sub>Split document: one page per file makes 13 files.</sub></td>
+<td width="50%" valign="top"><img src="docs/images/pdfcraft-split.png" alt="쪽마다 파일 하나로 나누어 13쪽에서 13개 파일을 만든다고 알려 주는 문서 나누기 대화 상자"><br><sub>문서 나누기: 한 쪽에 파일 하나씩, 13개 파일</sub></td>
 </tr>
 </table>
 
-## Combine and split without losing a thing
+## 하나도 잃지 않고 합치고 나누기
 
-**Combine files** merges any number of PDFs into one. Each file gets a bookmark, with its own bookmarks nested underneath.
+**파일 합치기**는 PDF를 몇 개든 하나로 합칩니다. 파일마다 책갈피가 생기고, 그 안에 각 파일의 책갈피가 들어갑니다.
 
-**Extract** copies the pages you select into a new document. **Split** divides a document every *n* pages, or before the pages you choose.
+**추출**은 선택한 쪽을 새 문서로 복사합니다. **나누기**는 *n*쪽마다, 또는 고른 쪽 앞에서 문서를 나눕니다.
 
-Nothing quietly disappears along the way:
-- links and named destinations are rewired to the copied pages;
-- form fields stay interactive;
-- layers keep their on/off defaults;
-- attachments come along.
+그 과정에서 슬그머니 사라지는 것은 없습니다.
+- 링크와 이름 붙은 위치는 복사된 쪽을 가리키도록 다시 연결됩니다.
+- 양식 칸은 계속 입력할 수 있습니다.
+- 레이어는 켜짐/꺼짐 기본값을 유지합니다.
+- 첨부 파일도 함께 옵니다.
 
-Every page of a combined document renders pixel-identical to its source.
+합친 문서의 모든 쪽은 원본과 픽셀 단위로 똑같이 그려집니다.
 
 ```sh
 pdfcraft-cli combine report.pdf appendix.pdf --out combined.pdf
@@ -202,395 +176,250 @@ pdfcraft-cli split   report.pdf --every 10 --out-dir parts/
 
 ---
 
-## Open protected documents and respect their rules
+## 보호된 문서 열기와 규칙 지키기
 
-PdfCraft implements the PDF standard security handler completely:
-- every revision, from 40-bit RC4 to AES-256;
-- user and owner passwords, including Unicode passwords normalised with SASLprep;
-- crypt filters and attachment-only encryption.
+PdfCraft는 PDF 표준 보안 처리기를 완전히 구현합니다.
+- 40비트 RC4부터 AES-256까지 모든 리비전
+- 사용자·소유자 암호 (SASLprep으로 정규화한 유니코드 암호 포함)
+- 암호 필터와 첨부 파일만 암호화하는 방식
 
-Documents restricted by their author show a clear notice, and PdfCraft honours their permissions. Enter the owner password and the restrictions lift. Edits to encrypted documents are saved encrypted, under the same keys.
+작성자가 제한을 건 문서는 분명하게 알려 주고 그 권한을 지킵니다. 소유자 암호를 입력하면 제한이 풀립니다. 암호화된 문서를 편집하면 같은 키로 암호화해 저장합니다.
 
 <table>
 <tr>
-<td width="50%" valign="top"><img src="docs/images/pdfcraft-properties.png" alt="The Document Properties dialog on its Description tab, with editable title, author, subject and keywords, and tabs for Security, Fonts and Advanced"><br><sub>Document Properties, Description tab</sub></td>
+<td width="50%" valign="top"><img src="docs/images/pdfcraft-properties.png" alt="설명 탭을 연 문서 속성 대화 상자"><br><sub>문서 속성의 설명 탭</sub></td>
 <td width="50%" valign="top">
 
-**Document Properties** shows:
-- the document's title, author, subject and keywords, which you can edit;
-- the fonts it uses and whether each is embedded;
-- PDF version, page size, tags, fields, layers and attachments;
-- the full security picture: encryption method, which password opened it, and each permission.
+**문서 속성**에서 볼 수 있는 것:
+- 문서 제목, 작성자, 주제, 키워드 (편집 가능)
+- 쓰인 글꼴과 각 글꼴의 포함 여부
+- PDF 버전, 쪽 크기, 태그, 양식 칸, 레이어, 첨부 파일
+- 보안 전체: 암호화 방식, 어떤 암호로 열었는지, 각 권한
 
 </td>
 </tr>
 </table>
 
-## Comments, forms, layers and attachments
+## 댓글, 양식, 레이어, 첨부 파일
 
 <table>
 <tr>
-<td width="50%"><img src="docs/images/pdfcraft-forms.png" alt="The Interactive Form page with highlighted text fields, checkboxes, radio buttons, a list and a signature field, and the Fields panel listing all 13 fields and their values"></td>
-<td width="50%"><img src="docs/images/pdfcraft-layers.png" alt="The Review and Markup page with highlights, shapes, ink and an APPROVED stamp under a DRAFT watermark, and the Layers panel with Draft watermark and Print-only notes"></td>
+<td width="50%"><img src="docs/images/pdfcraft-forms.png" alt="입력 칸, 확인란, 라디오 단추, 목록, 서명 칸이 있는 양식 페이지와 양식 칸 패널"></td>
+<td width="50%"><img src="docs/images/pdfcraft-layers.png" alt="강조, 도형, 잉크, 승인 도장이 있는 검토 페이지와 레이어 패널"></td>
 </tr>
 <tr>
-<td valign="top"><b>Forms</b>: every field with its current value, field highlighting, and checkboxes, radio buttons, lists and signatures drawn the way their author designed them.</td>
-<td valign="top"><b>Layers</b>: switch optional content on and off and the page re-renders instantly. <b>Comments</b> appear as threaded conversations, and <b>attachments</b> can be opened or saved.</td>
+<td valign="top"><b>양식</b>: 모든 칸과 현재 값, 칸 강조, 그리고 확인란·라디오 단추·목록·서명을 작성자가 디자인한 모양대로 그립니다.</td>
+<td valign="top"><b>레이어</b>: 선택적 콘텐츠를 켜고 끄면 바로 다시 그립니다. <b>댓글</b>은 대화 스레드로 보이고, <b>첨부 파일</b>은 열거나 저장할 수 있습니다.</td>
 </tr>
 </table>
 
-## Every tool, one keystroke away
+## 모든 도구를 단축키 하나로
 
-Press <kbd>⌘K</kbd> to search every tool and command, or browse the **All tools** catalogue. Tools that are still in development are marked with the milestone that will ship them.
+<kbd>⌘K</kbd>(Windows는 <kbd>Ctrl+K</kbd>)를 눌러 모든 도구와 명령을 검색하거나 **모든 도구** 목록을 둘러보세요. 아직 개발 중인 도구에는 나올 예정인 단계가 표시됩니다. 한국어 화면에서는 한국어 이름, 영어 이름, 명령 ID 어느 것으로도 찾을 수 있습니다.
 
 <table>
 <tr>
-<td width="50%"><img src="docs/images/pdfcraft-palette.png" alt="The command palette searching for 'page', listing Page grid, Page labels, Rotate pages, Insert pages, Delete pages, Extract pages and more, each with the tool it belongs to"></td>
-<td width="50%"><img src="docs/images/pdfcraft-tools.png" alt="The Welcome to PdfCraft home screen with recommended tools, a recent file, a privacy note, and the full tool catalogue in the side panel"></td>
+<td width="50%"><img src="docs/images/pdfcraft-palette.png" alt="'page'를 검색한 명령 팔레트"></td>
+<td width="50%"><img src="docs/images/pdfcraft-tools.png" alt="추천 도구, 최근 파일, 개인 정보 안내, 전체 도구 목록이 보이는 시작 화면"></td>
 </tr>
 <tr>
-<td align="center"><sub>The <kbd>⌘K</kbd> command palette</sub></td>
-<td align="center"><sub>The home screen and the All tools catalogue</sub></td>
+<td align="center"><sub><kbd>⌘K</kbd> 명령 팔레트</sub></td>
+<td align="center"><sub>시작 화면과 모든 도구 목록</sub></td>
 </tr>
 </table>
 
 ---
 
-## Runs everywhere, stays yours
+## 어디서나 돌아가고, 내 것으로 남는다
 
-- **Native on macOS, Windows, Linux and FreeBSD**, and **in the browser** through WebAssembly, from the same Rust codebase. Windows builds come for x64, x86 and ARM64 (Windows on ARM, no emulation); every ARM64 change is tested on ARM64 hardware in CI.
-- **Private by design.** Documents never leave your machine. There's no account, no telemetry and no cloud processing.
-- **Engine first.** Parsing, rendering and editing live in reusable library crates. The interface is one swappable layer on top.
-- **Scriptable.** The `pdfcraft-cli` tool (see [Built for agents, too](#built-for-agents-too)) covers inspecting, rendering, extracting text, editing, combining, extracting pages and splitting. Robustness sweeps run on the same engine as the app.
+- **macOS, Windows, Linux, FreeBSD에서 네이티브로**, 그리고 WebAssembly로 **브라우저에서도** 같은 Rust 코드로 돌아갑니다.
+- **설계부터 개인 정보 보호.** 문서는 내 컴퓨터를 떠나지 않습니다. 계정도, 원격 수집도, 클라우드 처리도 없습니다.
+- **엔진 우선.** 파싱, 렌더링, 편집은 재사용 가능한 라이브러리 크레이트에 있고, 화면은 그 위에 얹힌 교체 가능한 층 하나입니다.
+- **스크립트로 다루기.** `pdfcraft-cli`로 살펴보기, 렌더링, 텍스트 추출, 편집, 합치기, 쪽 추출, 나누기를 할 수 있습니다. 견고성 검사도 앱과 같은 엔진에서 돕니다.
 
 ```sh
-pdfcraft-cli info  form.pdf                                  # structure as JSON
-pdfcraft-cli text  paper.pdf --page 3                        # reading-order text
+pdfcraft-cli info  form.pdf                                  # 구조를 JSON으로
+pdfcraft-cli text  paper.pdf --page 3                        # 읽기 순서대로 텍스트
 pdfcraft-cli edit  in.pdf --rotate 1,2:90 --delete 5 --title "Q3" --out out.pdf
 ```
 
 ---
 
-## Built for agents, too
+## AI 에이전트용으로도
 
-Every engine feature is reachable without the GUI, through one table of JSON-Schema-described tools: open, inspect, render pages to PNG, extract and find text, rotate, delete, move and insert pages, edit bookmarks and page labels, add, reply to, restyle and delete comments (highlight a phrase just by naming it), list and fill in form fields, protect with passwords, set metadata, undo and redo, save, combine, extract and split. Three front doors share it:
+엔진의 모든 기능을 GUI 없이 쓸 수 있습니다. JSON 스키마로 설명된 도구 표 하나로 열기, 살펴보기, 쪽을 PNG로 렌더링, 텍스트 추출·검색, 쪽 회전·삭제·이동·삽입, 책갈피와 쪽 번호 편집, 댓글 추가·답글·스타일 변경·삭제(문구 이름만으로 강조), 양식 칸 나열·채우기, 암호 보호, 메타데이터 설정, 실행 취소·다시 실행, 저장, 합치기, 추출, 나누기를 합니다. 입구는 세 가지입니다.
 
-- **`pdfcraft-cli run`**, for one-off calls and JSON scripts:
+- **`pdfcraft-cli run`** — 한 번 호출이나 JSON 스크립트:
 
   ```sh
-  pdfcraft-cli tools                                        # every tool and its JSON Schema
-  pdfcraft-cli run text_find doc=1 query=invoice            # key=value; values parse as JSON
-  pdfcraft-cli run --script review.json                     # e.g. comment_add {"type": "highlight", "find": "total due"}
-  pdfcraft-cli run --script steps.json --root ./work        # several steps in one session
-  pdfcraft-cli run --script steps.json --report             # one JSON document: per step its number, tool, status, result or error
+  pdfcraft-cli tools                                        # 모든 도구와 JSON 스키마
+  pdfcraft-cli run text_find doc=1 query=invoice            # key=value, 값은 JSON으로 해석
+  pdfcraft-cli run --script review.json                     # 예: comment_add {"type": "highlight", "find": "total due"}
+  pdfcraft-cli run --script steps.json --root ./work        # 한 세션에서 여러 단계
+  pdfcraft-cli run --script steps.json --report             # 단계별 번호·도구·상태·결과를 JSON 하나로
   ```
 
-  With `--root`, every file the script's steps read or write stays in that directory, including the PNG a step saves with `"out"` (the script itself is read from wherever you name it).
+  `--root`를 주면 스크립트가 읽고 쓰는 모든 파일이 그 폴더 안에 머뭅니다.
 
-- **An MCP server**, for AI agents such as Claude. **It is opt-in:** PdfCraft never starts it on its own, and it opens no network port. It runs only while an agent launches `pdfcraft-cli mcp`, talks over stdin/stdout, and stops when the agent disconnects. To enable it, add it to your agent's MCP configuration:
+- **MCP 서버** — Claude 같은 AI 에이전트용. **직접 켜야만 동작합니다.** PdfCraft가 스스로 시작하지 않고, 네트워크 포트도 열지 않습니다. 에이전트가 `pdfcraft-cli mcp`를 실행하는 동안 stdin/stdout으로만 통신하고 연결이 끊기면 멈춥니다. 에이전트의 MCP 설정에 추가하세요.
 
   ```json
   { "mcpServers": { "pdfcraft": { "command": "pdfcraft-cli", "args": ["mcp", "--root", "/path/to/your/pdfs"] } } }
   ```
 
-  `--compact` shrinks the tool list the agent has to read: `tools/list` returns about ten core tools plus `tool_search` and `tool_call`, which find and run every other tool, so the list costs far fewer tokens. Every tool still works.
+  `--compact`를 주면 에이전트가 읽을 도구 목록이 핵심 도구 10여 개와 `tool_search`, `tool_call`로 줄어 토큰이 훨씬 적게 듭니다. 모든 도구는 그대로 쓸 수 있습니다. `--root`는 에이전트가 읽고 쓸 수 있는 파일을 한 폴더로 가둡니다. 서버를 아예 빼고 빌드하려면 `cargo build -p pdfcraft-cli --no-default-features`.
 
-  `--root` confines every file the agent can read or write to one directory. Builds that should not include the server at all can use `cargo build -p pdfcraft-cli --no-default-features`.
+- **Rust API** (`pdfcraft_automation::Automation::call`) — 다른 프로그램에 넣어 쓰기.
 
-- **The Rust API** (`pdfcraft_automation::Automation::call`), for embedding.
+편집은 `doc_save` 전까지 메모리에 머물며 되돌릴 수 있습니다. 같은 파일에 저장하면 증분 업데이트를 덧붙이므로 원본 바이트가 보존되고, 쓰기는 원자적입니다. 저장하지 않은 변경을 말없이 버리는 일은 없습니다.
 
-Edits stay in memory, undoable, until `doc_save`. Saving to the same file appends an incremental update, so the original bytes are preserved, and the write is atomic. Unsaved changes are never discarded silently.
+### 앱 자체를 조종하기
 
-### Driving the app itself
+`pdfcraft --control ~/.pdfcraft-control.json`으로 데스크톱 앱을 시작하면 에이전트가 실제 화면을 보고 조작할 수 있습니다. 접근성 트리에서 얻은 위젯 트리(이름과 위치), 클릭, 입력, 키, 명령, 보기 옵션, 화면 캡처를 지원합니다. 이것도 기본값은 꺼짐입니다. 루프백에서만 듣고, 모든 연결은 그 파일에 적힌 무작위 토큰을 제시해야 하며, 그 파일은 본인만 읽을 수 있습니다.
 
-Start the desktop app with `pdfcraft --control ~/.pdfcraft-control.json` and an agent can see and operate the real interface: the widget tree with labels and positions (from the accessibility tree), clicks, typing, keys, commands, view options and screenshots. This is also off by default. It listens only on loopback, and every connection must present the random token written to that file, which only you can read.
-
-Keep the control file in a folder only you can write, not a shared one such as `/tmp`: another user could create the file there first and receive your commands. `pdfcraft-cli ui` refuses a control file that is a symbolic link, and on macOS, Linux and FreeBSD one that another user owns or can read or write. The app doesn't start if it can't write the file.
+제어 파일은 `/tmp` 같은 공유 폴더가 아니라 본인만 쓸 수 있는 폴더에 두세요. `pdfcraft-cli ui`는 심볼릭 링크인 제어 파일, 그리고 macOS·Linux·FreeBSD에서 다른 사용자가 소유하거나 읽고 쓸 수 있는 제어 파일을 거부합니다.
 
 ```sh
-pdfcraft-cli ui --control ~/.pdfcraft-control.json inspect query=rotate      # find widgets
-pdfcraft-cli ui --control ~/.pdfcraft-control.json click label="Organize pages"
+pdfcraft-cli ui --control ~/.pdfcraft-control.json inspect query=rotate      # 위젯 찾기
+pdfcraft-cli ui --control ~/.pdfcraft-control.json click label="쪽 정리"
 pdfcraft-cli ui --control ~/.pdfcraft-control.json key key=K modifiers='["command"]'
-pdfcraft-cli ui --control ~/.pdfcraft-control.json command id=comment.square   # pick a tool, then draw:
-pdfcraft-cli ui --control ~/.pdfcraft-control.json drag from='[400,300]' to='[600,420]'
+pdfcraft-cli ui --control ~/.pdfcraft-control.json set key=language value=ko   # 화면 언어를 한국어로
 pdfcraft-cli ui --control ~/.pdfcraft-control.json screenshot --out window.png
-pdfcraft-cli ui --control ~/.pdfcraft-control.json resize width=1200 height=800
-pdfcraft-cli ui --control ~/.pdfcraft-control.json focus label="Read"
-pdfcraft-cli ui --control ~/.pdfcraft-control.json inspect focused=true
 pdfcraft-cli ui --control ~/.pdfcraft-control.json quit
 ```
 
-`ui.dock` arranges the `tools` and `inspector` panels; `canvas` is the protected document view.
-Each per-panel request requires a `panel` ID and an `operation`: `open`, `close`,
-`activate`, `float` with `rect: [x, y, width, height]`, or `move` with `target` and
-`zone: center|left|right|top|bottom`. For example,
-`{"operation":"float","panel":"tools","rect":[100,100,320,440]}` floats Tools.
-`ui.dock.reset` restores the default
-arrangement. The control channel accepts these methods directly; `ui.command` also accepts
-`{"id":"ui.dock","params":{...}}`. Saved preferences retain groups, active tabs, visibility
-and floating geometry. Invalid requests return an error without changing the document or layout.
-
-
-`resize` requests a native inner-window size in logical points (each dimension must be between 320 and 8192); the window manager may constrain it. `state` reports the observed `window.width`, `window.height` and `window.pixels_per_point`. `focus` accepts exactly one widget `id` or unique enabled, focusable `label`; subsequent `key` requests traverse or activate the actual widgets. `inspect` includes focusability and accepts a `focused` filter. `quit` takes no parameters: clean documents exit normally, while unsaved edits or typing open the existing Save/Don't save/Cancel prompt and return `quitting: false, needs_confirmation: true`. It never silently discards work. Window resizing and application quit are native-only.
+도킹(`ui.dock`), 창 크기(`resize`), 포커스(`focus`) 같은 고급 제어 명령의 자세한 설명은 [영문 README](README.en.md#driving-the-app-itself)를 보세요.
 
 ---
 
-## How it's built
+## 어떻게 만들어졌나
 
-PdfCraft is a Cargo workspace of focused crates, layered so the core never depends on the UI:
+PdfCraft는 역할이 분명한 크레이트로 이뤄진 Cargo 워크스페이스이며, 핵심 엔진이 화면(UI)에 의존하지 않도록 층을 나눴습니다.
 
-| Crate | What it does |
+| 크레이트 | 하는 일 |
 |---|---|
-| `pdfcraft-filters` | Every PDF stream filter (Flate, LZW, ASCII85, RunLength, predictors), encode and decode, property-tested |
-| `pdfcraft-crypt` | The standard security handler: RC4, AES-128/256, revisions 2–6, permissions |
-| `pdfcraft-cos` | The PDF object layer: tolerant parsing, repair, copy-on-write edits, incremental and full writing |
-| `pdfcraft-organize` | Page operations, combine / extract / split, bookmarks, page labels, document information |
-| `pdfcraft-fonts` | Font metrics and encodings for generated appearances |
-| `pdfcraft-annot` | Comments: builders and appearance streams for notes, text markup, shapes, ink and text boxes; replies, status, edits |
-| `pdfcraft-forms` | Interactive forms: the field model, filling with regenerated appearances, Clear form |
-| `pdfcraft-render` | Rendering, inspection and text extraction with reading order |
-| `pdfcraft-engine` | The façade every frontend uses: sessions, edits, undo, saving, the tool catalogue |
-| `pdfcraft-automation` | Agent control: the headless tool table, `pdfcraft-cli run`, and the opt-in MCP server |
-| `pdfcraft-ui-egui` | The desktop and web interface |
+| `pdfcraft-filters` | 모든 PDF 스트림 필터(Flate, LZW, ASCII85, RunLength, 예측기)의 인코딩·디코딩, 속성 테스트 |
+| `pdfcraft-crypt` | 표준 보안 처리기: RC4, AES-128/256, 리비전 2–6, 권한 |
+| `pdfcraft-cos` | PDF 객체 층: 관대한 파싱, 복구, 쓰기 시 복사 편집, 증분·전체 쓰기 |
+| `pdfcraft-organize` | 쪽 작업, 합치기·추출·나누기, 책갈피, 쪽 번호, 문서 정보 |
+| `pdfcraft-fonts` | 생성되는 모양에 쓰는 글꼴 메트릭과 인코딩 |
+| `pdfcraft-annot` | 댓글: 메모, 텍스트 표시, 도형, 잉크, 텍스트 상자의 빌더와 모양 스트림, 답글, 상태, 편집 |
+| `pdfcraft-forms` | 대화형 양식: 칸 모델, 모양을 다시 만들며 채우기, 양식 지우기 |
+| `pdfcraft-render` | 렌더링, 살펴보기, 읽기 순서를 지키는 텍스트 추출 |
+| `pdfcraft-engine` | 모든 프런트엔드가 쓰는 창구: 세션, 편집, 실행 취소, 저장, 도구 목록 |
+| `pdfcraft-automation` | 에이전트 제어: 헤드리스 도구 표, `pdfcraft-cli run`, 직접 켜는 MCP 서버 |
+| `pdfcraft-ui-egui` | 데스크톱과 웹 화면 |
 
-**Quality gates.** Every change passes the same automated checks:
-- formatting, and Clippy with warnings as errors;
-- 200+ unit, property and UI tests;
-- crate-layering rules and a WebAssembly build check;
-- an asset-licence audit.
+**품질 관문.** 모든 변경은 같은 자동 검사를 통과합니다: 서식 검사와 경고를 오류로 다루는 Clippy, 200개가 넘는 단위·속성·UI 테스트, 크레이트 층 규칙과 WebAssembly 빌드 확인, 에셋 라이선스 감사.
 
-On top of those, two corpus sweeps run over real-world files:
-- **Opening and rendering:** of the 983 pdf.js test files, 963 open and render cleanly, with 0 crashes.
-- **Open, edit and save round trips:** 958 succeed.
+실제 파일로 두 가지 대량 검사도 돌립니다.
+- **열기와 렌더링:** pdf.js 테스트 파일 983개 중 963개가 깨끗하게 열리고 그려지며 충돌은 0건입니다.
+- **열기·편집·저장 왕복:** 958개 성공.
 
-The output is verified against independent implementations: hayro and qpdf on every CI run, and
-poppler over the corpus on demand (`cargo xtask text-oracle`).
+결과는 독립 구현과 비교해 검증합니다: CI마다 hayro와 qpdf, 필요할 때 전체 파일에 poppler(`cargo xtask text-oracle`).
 
-PdfCraft is a clean-room implementation. Its behaviour comes from the ISO 32000 specification and black-box observation, never from anyone else's code. Every icon, font and image is openly licensed and listed in [ATTRIBUTION.md](ATTRIBUTION.md).
+PdfCraft는 클린룸 구현입니다. 동작은 ISO 32000 규격과 블랙박스 관찰에서만 가져오며 다른 누구의 코드도 참고하지 않습니다. 모든 아이콘, 글꼴, 이미지는 공개 라이선스이며 [ATTRIBUTION.md](ATTRIBUTION.md)에 적혀 있습니다.
 
-## Get started
+## 직접 빌드하기
 
-Building needs Rust 1.95 or later.
+Rust 1.95 이상이 필요합니다.
 
 ```sh
-git clone https://github.com/storytold/pdfcraft
+git clone https://github.com/ugpapa/pdfcraft
 cd pdfcraft
-cargo xtask models                                # fetch the OCR models Scan & OCR needs (release builds include them)
-cargo run --release -p pdfcraft -- some.pdf     # desktop app
-cargo xtask demo-pdf                              # build the showcase PDF used in these screenshots
-cargo xtask screenshots                           # regenerate every screenshot in this README
+cargo xtask models                                # 스캔 & OCR에 필요한 OCR 모델 받기 (릴리스 빌드에는 포함)
+cargo run --release -p pdfcraft -- some.pdf       # 데스크톱 앱
 ```
 
-The interface language is chosen in **Menu → Edit → Preferences…** (Command-comma on macOS,
-Ctrl-comma elsewhere, also with no document open; Auto follows the system language;
-see [docs/localization.md](docs/localization.md)) and saved. Japanese covers commands,
-dialogs, panels and keyboard shortcuts. Command search accepts the translated label, the
-English label and the stable command id; filenames, PDF contents, author names, custom
-action names and error details from the engine or the operating system keep their own text.
+화면 언어는 **메뉴 → 편집 → 환경설정…**(macOS는 <kbd>⌘,</kbd>, 그 밖에는 <kbd>Ctrl+,</kbd>, 문서를 열지 않아도 됨)에서 고르며 저장됩니다. 자동을 고르면 시스템 언어를 따릅니다([docs/localization.md](docs/localization.md)). 파일 이름, PDF 내용, 작성자 이름, 엔진이나 운영체제의 오류 내용은 원래 글자 그대로 보입니다.
 
-Japanese fonts come from [craft-fonts](https://github.com/storytold/craft-fonts), an optional build
-input that every release includes. To build with them (Japanese interface text, and Japanese text in
-edited PDFs):
+한글은 컴퓨터에 설치된 글꼴로 그리므로 따로 준비할 것이 없습니다. 일본어·중국어 등 다른 언어 화면 글꼴은 선택 빌드 입력인 [craft-fonts](https://github.com/storytold/craft-fonts)에서 오며, 이 포크의 릴리스에도 들어 있습니다. 직접 빌드할 때 넣으려면:
 
 ```sh
 git clone https://github.com/storytold/craft-fonts ../craft-fonts
 CRAFT_FONTS_DIR=../craft-fonts cargo run --release -p pdfcraft -- some.pdf
 ```
 
-Each [GitHub release](https://github.com/storytold/pdfcraft/releases) has ready-made builds for macOS,
-Windows, Linux (AppImage, Flatpak, `.deb`, `.rpm` and a tarball), FreeBSD and the web; see
-[Downloads](#downloads). On Gentoo, the community [::snakebyte
-overlay](https://github.com/switch87/snakebyte-overlay) packages the Linux release as
-`app-text/pdfcraft-bin` (not maintained by the PdfCraft team):
+로그, 환경 변수 등 개발 참고 사항은 [docs/development.md](docs/development.md)에 있습니다.
 
-```sh
-eselect repository add snakebyte git https://github.com/switch87/snakebyte-overlay.git
-emaint sync -r snakebyte
-echo 'app-text/pdfcraft-bin ~amd64' >> /etc/portage/package.accept_keywords/pdfcraft
-emerge --ask app-text/pdfcraft-bin
-```
+## 앞으로
 
-Logs, environment variables and other development notes are in [docs/development.md](docs/development.md).
+PdfCraft는 아직 어리고 빠르게 움직이고 있습니다. 목표는 PDF를 보고, 정리하고, 주석을 달고, 채우고, 서명하고, 편집하는 작업대로서 Acrobat Pro와 대등해지는 것입니다.
 
-## What's next
+**2026년 10월 현재, 솔직하게:** PdfCraft는 **알파**입니다. Acrobat Pro의 오프라인 기능 대부분이 어떤 형태로든 있습니다(추적 중인 전체 기능의 57%, 필수 기능의 94%). 일상 작업(보기, 댓글, 양식 채우기·서명, 쪽 정리) 기준으로 Acrobat을 대체하는 데 약 55%, Acrobat Pro 전체 기준 약 49%, 필수 기능만 필요한 사람 기준 약 66% 왔습니다. 일상 작업은 모두 끝까지 할 수 있지만 변환과 공유는 약합니다: Office→PDF 변환이 없고, Word 내보내기는 레이아웃을 잃습니다.
 
-PdfCraft is young and moving fast. The aim is a workbench where you can view, organize, annotate, fill, sign and edit PDFs, at parity with Acrobat Pro.
+- **지금 쓸 만한 것:** 보기와 검색, 정리·합치기·나누기, 대부분의 댓글, 양식 채우기와 만들기(샌드박스 JavaScript 포함), 암호·가리기·정보 지우기, 기본 디지털 서명, 인쇄, 접근성 검사기, CLI와 MCP를 통한 에이전트 제어.
+- **아직 빌려 쓰는 것:** 자체 렌더러를 만드는 동안 페이지는 `hayro` 크레이트가 그립니다.
+- **부족하거나 없는 것:** 기존 텍스트의 안정적인 편집(특히 CJK와 오른쪽→왼쪽 문자), 라틴 문자 밖의 OCR, Office 가져오기·내보내기, 서명 토큰과 온라인 장기 검증, Preflight와 PDF/X/UA, 웹 버전 인쇄, 실제 프린터 충실도, 완전한 XFA 양식.
+- **다지는 중:** 악의적인 파일에 대한 퍼징에서 여전히 충돌과 멈춤이 나오며, 하나씩 회귀 테스트와 함께 고치고 있습니다.
 
-**Where it stands (October 2026), honestly:** PdfCraft is **alpha**. Most of Acrobat Pro's offline features exist in some form (57% of all tracked features, 94% of the must-haves). For everyday work (viewing, commenting, filling and signing forms, organizing pages) it is about 55% of the way to replacing Acrobat; against all of Acrobat Pro, about 49%; for someone who only needs the essentials, about 66%. Every everyday workflow can be completed, but converting and sharing is weak: no Office-to-PDF, and Word export that loses layout.
-
-- **Good today:** viewing and search; organizing, combining and splitting; most kinds of comment; filling and authoring forms (with sandboxed JavaScript); passwords, redaction and sanitizing; basic digital signatures; printing; the Accessibility Checker; agent control through the CLI and MCP.
-- **Still borrowed:** pages are drawn by the `hayro` crate while our own renderer is built.
-- **Thin or missing:** reliable editing of existing text (especially CJK and right-to-left), OCR beyond Latin script, Office import/export, signature tokens and online long-term validation, Preflight and PDF/X/UA, printing from the web build, physical printer fidelity, and full XFA forms.
-- **Hardening:** fuzzing still turns up crashes and hangs on hostile files; each one is fixed with a regression test. Quality has not yet been compared with Acrobat side by side.
-
-**Next, in order:** Office-to-PDF and a Word export that keeps layout, the reported bugs and the Chinese interface font, a fidelity harness against Acrobat and the renderer, editing existing content, then the Pro workflows (OCR, Office, Preflight, signatures, accessibility tagging) and 1.0 polish.
-
-The summary is in **[ROADMAP.md](ROADMAP.md)**; the full assessment by dimension and area is in [docs/target-app-parity.md](docs/target-app-parity.md), the ranked gaps in [docs/gaps.md](docs/gaps.md), and the milestones in [docs/roadmap.md](docs/roadmap.md).
+요약은 **[ROADMAP.md](ROADMAP.md)**, 영역별 전체 평가는 [docs/target-app-parity.md](docs/target-app-parity.md), 우선순위별 부족한 점은 [docs/gaps.md](docs/gaps.md), 단계는 [docs/roadmap.md](docs/roadmap.md)에 있습니다(영문).
 
 ---
 
-## Downloads
+## 내려받기
 
-**New to PdfCraft?** Download it from the [PdfCraft page on getartcraft.com](https://getartcraft.com/apps/pdfcraft). That's the easiest way to install it.
-
-**Want a specific build or format?** On GitHub, the [latest release](https://github.com/storytold/pdfcraft/releases/latest) has every build listed below, and [all releases](https://github.com/storytold/pdfcraft/releases) has earlier versions and their notes. `<ver>` in the file names is the version number, and `SHA256SUMS.txt` lists a checksum for every file.
+[**최신 릴리스**](https://github.com/ugpapa/pdfcraft/releases/latest)에 아래 파일이 있습니다. [전체 릴리스](https://github.com/ugpapa/pdfcraft/releases)에는 이전 빌드도 있습니다. 파일 이름의 `<ver>`는 버전 번호입니다.
 
 ### Windows
 
-| Build | Installer | Portable |
+| 빌드 | 설치 파일 | 무설치(포터블) |
 |---|---|---|
-| x64 (64-bit Intel/AMD) | `pdfcraft-<ver>-windows-x64.msi` | `pdfcraft-<ver>-windows-x64-portable.zip` |
-| arm64 (Snapdragon and other ARM PCs) | `pdfcraft-<ver>-windows-arm64.msi` | `pdfcraft-<ver>-windows-arm64-portable.zip` |
-| x86 (32-bit) | `pdfcraft-<ver>-windows-x86.msi` | `pdfcraft-<ver>-windows-x86-portable.zip` |
+| x64 (64비트 Intel/AMD) | `pdfcraft-<ver>-windows-x64.msi` | `pdfcraft-<ver>-windows-x64-portable.zip` |
 
-Installers and executables are code-signed.
+무설치 zip은 USB 메모리를 포함해 어느 폴더에서든 실행됩니다. 함께 든 `portable.txt` 덕분에 설정, 로그, 충돌 복구 자료를 `pdfcraft.exe` 옆의 `PdfCraftData` 폴더에 두며 `%APPDATA%`에는 아무것도 쓰지 않습니다. 이 파일을 지우면 일반 사용자 폴더를 씁니다.
 
-The portable zip runs from any folder, a USB stick included. Its `portable.txt` keeps the settings,
-logs and crash recovery in a `PdfCraftData` folder next to `pdfcraft.exe`, so nothing is written to
-`%APPDATA%`; delete that file to use the normal per-user folders.
+MSI는 모든 사용자용으로 설치되며 관리자 권한이 필요합니다. 탐색기에서 PDF 파일의 오른쪽 클릭 메뉴에 "PdfCraft로 편집", 이미지 파일의 메뉴에 "PdfCraft로 PDF 만들기…"를 추가합니다(Windows 11은 "추가 옵션 표시" 아래). 기본으로 여는 앱은 바꾸지 않습니다.
 
-The MSI installs for all users and requires administrator privileges. It adds "Edit with PdfCraft"
-to the right-click menu of PDF files and "Create PDF with PdfCraft…" to the right-click menu of
-images (.png .jpg .jpeg .tif .tiff .gif .bmp .jp2 .j2k .jpx) in File Explorer (on Windows 11, under
-"Show more options"), without changing which app opens them by default. For unattended deployment
-without a desktop shortcut, run from an elevated terminal:
-
-```powershell
-msiexec /i "pdfcraft-<ver>-windows-x64.msi" /qn /norestart INSTALLDESKTOPSHORTCUT=0
-```
-
-| Property | `=0` leaves out |
-|---|---|
-| `INSTALLDESKTOPSHORTCUT` | the all-users desktop shortcut |
-| `INSTALLPDFCONTEXTMENU` | "Edit with PdfCraft" on PDF files |
-| `INSTALLIMAGECONTEXTMENU` | "Create PDF with PdfCraft…" on images |
-
-All three are on for a first install. An upgrade keeps what the installed version has: a shortcut
-or menu entry that is there stays, and one that is missing (left out at install, or a desktop
-shortcut someone deleted) stays missing, so you don't need to pass them again. A value on the
-command line always wins: `=1` puts one back and `=0` removes it. Upgrading from a release that
-didn't have a menu yet (0.6.0 and earlier for the PDF menu, 0.2.1 and earlier for the image menu)
-adds it, as a first install would. Use the MSI for your architecture. Per-user installation
-overrides are not supported.
-
-**Pin the checksum, not just the version.** Release candidates of a version share its MSI version
-(MSI versions are numbers only, so 1.2.3-rc.1 and 1.2.3 are both 1.2.3), and the installer lets an
-MSI of the same version replace the installed one without asking. Two different `0.7.1` MSIs can't
-be told apart by version, so if your deployment tool checks the file, pin its SHA-256 from
-`SHA256SUMS.txt` (`Get-FileHash <file> -Algorithm SHA256`).
-
-**Signing identities.** The Windows MSIs and both executables are signed through Azure Trusted
-Signing with a certificate issued to `Learning Machines Inc` (Atlanta, Georgia, US). The macOS app
-and command-line tool are signed with the Developer ID `Learning Machines LLC (DJ6XS33FX8)` and
-notarized. The MSI's manufacturer, shown as the publisher in Installed apps, is
-`Learning Machines LLC`.
+> [!IMPORTANT]
+> 이 포크의 빌드는 **코드 서명이 되어 있지 않습니다.** 처음 실행할 때 "Windows의 PC 보호" 창이 뜨면 **추가 정보 → 실행**을 누르세요.
 
 ### macOS
 
-| Build | File | Notes |
-|---|---|---|
-| App, universal (Apple silicon + Intel) | `pdfcraft-<ver>-macos-universal.dmg` | Signed and notarized |
-| Command-line tool, universal | `pdfcraft-cli-<ver>-macos-universal.zip` | Signed and notarized |
-
-### Linux
-
-| Format | x86_64 | aarch64 (ARM64) | Notes |
-|---|---|---|---|
-| AppImage | `pdfcraft-<ver>-linux-x86_64.AppImage` | `pdfcraft-<ver>-linux-aarch64.AppImage` | Runs anywhere; updates itself with [AppImageUpdate](https://github.com/AppImageCommunity/AppImageUpdate) (`.zsync` files) |
-| Flatpak | `pdfcraft-<ver>-linux-x86_64.flatpak` | `pdfcraft-<ver>-linux-aarch64.flatpak` | Sandboxed; `flatpak install --user <file>` |
-| Debian/Ubuntu | `pdfcraft-<ver>-linux-x86_64.deb` | `pdfcraft-<ver>-linux-aarch64.deb` | |
-| Fedora/RHEL/openSUSE | `pdfcraft-<ver>-linux-x86_64.rpm` | `pdfcraft-<ver>-linux-aarch64.rpm` | |
-| Tarball | `pdfcraft-<ver>-linux-x86_64.tar.gz` | `pdfcraft-<ver>-linux-aarch64.tar.gz` | Unpack anywhere |
-| Command-line tool | `pdfcraft-cli-<ver>-linux-x86_64.tar.gz` | `pdfcraft-cli-<ver>-linux-aarch64.tar.gz` | `pdfcraft-cli` alone (and its opt-in MCP server), for servers, CI and agents |
-
-RISC-V (riscv64) builds come as tarballs only: `pdfcraft-<ver>-linux-riscv64.tar.gz` and `pdfcraft-cli-<ver>-linux-riscv64.tar.gz`. They are cross-compiled and need glibc 2.39 or newer (Ubuntu 24.04+, Debian 13+).
-
-Every other Linux build needs glibc 2.35 or newer (Ubuntu 22.04+, Debian 12+, Fedora 36+, RHEL 10).
-
-### FreeBSD
-
-| Build | File |
+| 빌드 | 파일 |
 |---|---|
-| x86_64 | `pdfcraft-<ver>-freebsd-x86_64.tar.gz` |
+| 앱, 유니버설 (Apple Silicon + Intel) | `pdfcraft-<ver>-macos-universal.dmg` |
+| 명령줄 도구, 유니버설 | `pdfcraft-cli-<ver>-macos-universal.zip` |
 
-### Web (WebAssembly)
+DMG를 열고 PdfCraft를 응용 프로그램 폴더로 끌어다 놓으세요.
 
-| Build | File | Notes |
+> [!IMPORTANT]
+> 이 포크의 빌드는 **Apple 공증을 받지 않았습니다.** 처음 실행할 때 앱을 **오른쪽 클릭 → 열기**를 하거나, 터미널에서 다음을 실행하세요.
+> ```sh
+> xattr -dr com.apple.quarantine /Applications/PdfCraft.app
+> ```
+
+### Linux · FreeBSD · 웹
+
+이 포크는 Windows와 macOS 빌드만 올립니다. Linux(AppImage, Flatpak, `.deb`, `.rpm`), FreeBSD, 웹 빌드는 [원본 릴리스](https://github.com/storytold/pdfcraft/releases)를 쓰거나 위의 [직접 빌드하기](#직접-빌드하기)를 따르세요. 원본 빌드에는 아직 한국어 화면이 없습니다.
+
+---
+
+## Crafting Apps
+
+PdfCraft는 [ArtCraft](https://getartcraft.com/) 팀이 만드는 무료 오픈 소스 창작 도구 모음 **Crafting Apps** 중 하나입니다. 모두 Rust로 처음부터 작성되었고 각자 독립적으로 쓸 수 있습니다.
+
+| 앱 | 용도 | 코드 |
 |---|---|---|
-| Static site | `pdfcraft-web-<ver>.zip` | Runs in a modern browser; host it on any static server |
+| **PhotoCraft** | 이미지 편집: 레이어, 마스크, 글자, 실제 PSD 파일 | [GitHub](https://github.com/storytold/photocraft) |
+| **VectorCraft** | 벡터 일러스트 | [GitHub](https://github.com/storytold/vectorcraft) |
+| **FilmCraft** | 영상 편집, 색, 소리 | [GitHub](https://github.com/storytold/filmcraft) |
+| **LightCraft** | 사진 라이브러리와 RAW 현상 | [GitHub](https://github.com/storytold/lightcraft) |
+| **PdfCraft** | **PDF 읽기·정리·보호 · 지금 보고 있는 것** | [GitHub](https://github.com/storytold/pdfcraft) |
+| **EffectCraft** | 모션 그래픽과 시각 효과 | [GitHub](https://github.com/storytold/effectcraft) |
+| **DesignCraft** | 페이지 레이아웃과 출판 | [GitHub](https://github.com/storytold/designcraft) |
+
+원본 프로젝트의 커뮤니티는 [Discord](https://discord.gg/artcraft)에 있습니다. 이 포크(한국어판)에 관한 문의는 이 저장소의 [Issues](https://github.com/ugpapa/pdfcraft/issues)에 남겨 주세요.
 
 ---
 
-## The Crafting Apps
+## 라이선스와 크레딧
 
-PdfCraft is one of the **Crafting Apps**: free, open-source creative tools from the
-[ArtCraft](https://getartcraft.com/) team, each written from scratch in Rust and each able to
-stand on its own.
+PdfCraft는 [MIT](LICENSE-MIT) 또는 [Apache-2.0](LICENSE-APACHE) 중 원하는 쪽으로 쓸 수 있는 이중 라이선스입니다.
+Copyright (c) 2026 ArtCraft Team and the PdfCraft contributors. 필요한 고지는 [NOTICE](NOTICE)에 있습니다.
 
-| | App | What it's for | Code | Learn more |
-|:-:|---|---|---|---|
-| <img src="https://raw.githubusercontent.com/storytold/photocraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.photocraft.png" alt="" width="32" height="32"> | **PhotoCraft** | Image editing: layers, masks, type and real PSD files | [GitHub](https://github.com/storytold/photocraft) | [Website](https://getartcraft.com/apps/photocraft) |
-| <img src="https://raw.githubusercontent.com/storytold/vectorcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.vectorcraft.png" alt="" width="32" height="32"> | **VectorCraft** | Vector illustration | [GitHub](https://github.com/storytold/vectorcraft) | [Website](https://getartcraft.com/apps/vectorcraft) |
-| <img src="https://raw.githubusercontent.com/storytold/filmcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.filmcraft.png" alt="" width="32" height="32"> | **FilmCraft** | Video editing, color and sound | [GitHub](https://github.com/storytold/filmcraft) | [Website](https://getartcraft.com/apps/filmcraft) |
-| <img src="https://raw.githubusercontent.com/storytold/lightcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.lightcraft.png" alt="" width="32" height="32"> | **LightCraft** | Photo library and raw development | [GitHub](https://github.com/storytold/lightcraft) | [Website](https://getartcraft.com/apps/lightcraft) |
-| <img src="https://raw.githubusercontent.com/storytold/pdfcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.pdfcraft.png" alt="" width="32" height="32"> | **PdfCraft** | **Reading, organizing and protecting PDFs · you are here** | [GitHub](https://github.com/storytold/pdfcraft) | [Website](https://getartcraft.com/apps/pdfcraft) |
-| <img src="https://raw.githubusercontent.com/storytold/effectcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.effectcraft.png" alt="" width="32" height="32"> | **EffectCraft** | Motion graphics and visual effects | [GitHub](https://github.com/storytold/effectcraft) | [Website](https://getartcraft.com/apps/effectcraft) |
-| <img src="https://raw.githubusercontent.com/storytold/designcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.designcraft.png" alt="" width="32" height="32"> | **DesignCraft** | Page layout and publishing | [GitHub](https://github.com/storytold/designcraft) | [Website](https://getartcraft.com/apps/designcraft) |
+포함된 글꼴, 아이콘, 이미지 등 에셋은 각자의 공개 라이선스를 따르며, 작성자·출처·라이선스가 [ATTRIBUTION.md](ATTRIBUTION.md)에 적혀 있습니다. 릴리스 빌드에는 [craft-fonts](https://github.com/storytold/craft-fonts/blob/main/ATTRIBUTION.md)의 글꼴(SIL Open Font License 1.1)도 들어 있습니다. 한국어 번역은 원본 PR [#2357](https://github.com/storytold/pdfcraft/pull/2357)의 기여자에게서 왔습니다.
 
-And [**ArtCraft**](https://getartcraft.com/) itself, our AI image and video studio for artists who want real control.
+ArtCraft 이름, 워드마크, 로고는 ArtCraft 팀의 상표이며 이 라이선스에 포함되지 않습니다. 원본 브랜드 라이선스에 따라 이 포크에서는 로고를 제거했습니다.
 
-<br>
-
-<p align="center">
-  <a href="https://discord.gg/artcraft"><img alt="Join the ArtCraft community on Discord" src="https://img.shields.io/badge/Join%20us%20on%20Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" height="40"></a>
-</p>
-
-<h3 align="center">Come make things with us</h3>
-
-<p align="center">
-  Our Discord is where artists of every kind hang out: people who paint, shoot, draw, cut film,
-  set type, and people still figuring out what they like to make. Share what you're working on,
-  ask for help, tell us what's broken, or tell us what you wish these tools could do.
-  Whatever your medium and however long you've been at it, you're welcome here.
-</p>
-
-<p align="center">
-  <a href="https://discord.gg/artcraft"><b>discord.gg/artcraft</b></a> ·
-  <a href="https://getartcraft.com/">getartcraft.com</a> ·
-  <a href="https://getartcraft.com/apps">The Crafting Apps</a> ·
-  <a href="https://getartcraft.com/apps/pdfcraft">PdfCraft</a>
-</p>
-
----
-
-## License and credits
-
-PdfCraft is dual-licensed under [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE), at your option.
-Copyright (c) 2026 ArtCraft Team and the PdfCraft contributors. Required notices are in [NOTICE](NOTICE).
-
-Bundled fonts, icons, images and other assets keep their own open licenses; each one is listed
-with its author, source and license in [ATTRIBUTION.md](ATTRIBUTION.md). Release builds also embed
-the Japanese fonts of [craft-fonts](https://github.com/storytold/craft-fonts/blob/main/ATTRIBUTION.md)
-(SIL Open Font License 1.1).
-
-The ArtCraft name, wordmark and logos in [`docs/brand/`](docs/brand/) are trademarks of the
-ArtCraft Team and are not covered by this license. They may be used only unmodified, and only as
-part of this repository and PdfCraft, under [`docs/brand/LICENSE-brand.txt`](docs/brand/LICENSE-brand.txt).
-Forks and modified versions must remove them.
-
-<sub>Adobe, Photoshop, Illustrator, Premiere Pro, Lightroom, Acrobat, After Effects and InDesign are trademarks or registered trademarks of Adobe Inc. in the United States and/or other countries. PdfCraft is an independent, open-source project and is not affiliated with, sponsored by or endorsed by Adobe Inc.; these names are used only to describe the workflows it is compatible with.</sub>
-
-<p align="center">
-  <sub>Made by the <a href="https://getartcraft.com/">ArtCraft</a> team and community.</sub>
-</p>
-
-Tools and Inspector panels can be dragged into tab groups, split beside the PDF, or floated within the app window. Read and full-screen modes keep their existing focused document view. Drag a panel header to a target edge or another header. Its context menu offers Float panel, Move to group, and Close panel. Existing panel toggles reopen panels at their saved location; Reset Panel Layout restores the app layout. Floating panels remain inside the current app window.
-
-Advanced `ui.dock` operations use the same validated transaction as pointer gestures:
-`moveFloating` updates `rect`, `resizeSplit` accepts a boolean child `path` and
-`size` (`{"Ratio":0.5}`, `{"FixedFirst":280}`, or `{"FixedSecond":280}`),
-`setStackOpen` takes `open`, and `resizeStack` takes a point `height` or null.
-A center `move` can include `before` (panel ID or null to append) for tab order.
-The equivalent `{"action": ...}` form accepts a serialized shared docking action;
-this is also the form emitted by the renderer. Protected-canvas and app-specific panel
-rules apply equally to both forms.
+<sub>Adobe, Photoshop, Illustrator, Premiere Pro, Lightroom, Acrobat, After Effects, InDesign은 미국 및 기타 국가에서 Adobe Inc.의 상표 또는 등록 상표입니다. PdfCraft는 독립적인 오픈 소스 프로젝트이며 Adobe Inc.와 제휴하거나 후원·보증을 받지 않습니다. 이 이름들은 호환되는 작업 흐름을 설명하는 데만 쓰입니다.</sub>
