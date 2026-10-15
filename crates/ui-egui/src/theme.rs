@@ -220,6 +220,8 @@ pub const SYSTEM_FALLBACK: &str = "system-fallback";
 pub const SYSTEM_DEVANAGARI_FALLBACK: &str = "system-devanagari-fallback";
 /// The name of the installed Telugu face [`installed_font_definitions`] may add.
 pub const SYSTEM_TELUGU_FALLBACK: &str = "system-telugu-fallback";
+/// The name of the installed Hangul (Korean) face [`installed_font_definitions`] may add.
+pub const SYSTEM_HANGUL_FALLBACK: &str = "system-hangul-fallback";
 
 /// What [`install_fonts_for`] installs: [`font_definitions_for`], then, on desktop, one face
 /// already installed on this machine. It only draws characters no embedded face has.
@@ -232,8 +234,8 @@ pub const SYSTEM_TELUGU_FALLBACK: &str = "system-telugu-fallback";
 /// - Otherwise it is the last fallback of every family (an Arabic file name in a build without
 ///   craft-fonts).
 ///
-/// An installed Devanagari face and an installed Telugu face, when there are, end every family
-/// just before that one, so Hindi and Telugu text draw in a build without such faces (#1531).
+/// An installed Devanagari, Telugu and Hangul face, when there are, end every family just before
+/// that one, so Hindi, Telugu and Korean text draw in a build without such faces (#1531).
 ///
 /// `PDFCRAFT_SYSTEM_FONTS=0` leaves them out.
 pub fn installed_font_definitions(cjk: CjkPreference) -> FontDefinitions {
@@ -246,6 +248,7 @@ pub fn installed_font_definitions(cjk: CjkPreference) -> FontDefinitions {
         for (name, data) in [
             (SYSTEM_DEVANAGARI_FALLBACK, crate::system_fonts::devanagari_fallback()),
             (SYSTEM_TELUGU_FALLBACK, crate::system_fonts::telugu_fallback()),
+            (SYSTEM_HANGUL_FALLBACK, crate::system_fonts::hangul_fallback()),
         ] {
             let Some(data) = data else { continue };
             fonts.font_data.insert(name.to_owned(), data);
