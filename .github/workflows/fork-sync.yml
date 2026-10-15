@@ -1,0 +1,134 @@
+# ugpapa/pdfcraft fork: merge upstream storytold/pdfcraft `main` into `custom` every day.
+# A clean merge that still compiles is pushed, which starts "Fork release". A merge that needs a
+# person (a conflict outside the files resolved below, or a build error) is not pushed; an issue
+# says what to look at instead.
+#
+# Needs the secret SYNC_TOKEN: a token that may push to this repository, including changes to
+# .github/workflows (the default GITHUB_TOKEN may not, and its pushes start no other workflow).
+name: Fork sync
+
+on:
+  schedule:
+    - cron: "0 18 * * *" # 03:00 KST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: fork-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: custom
+          fetch-depth: 0
+          token: ${{ secrets.SYNC_TOKEN }}
+
+      - name: Merge upstream main
+        id: merge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/storytold/pdfcraft.git
+          git fetch --no-tags upstream main
+          if git merge-base --is-ancestor upstream/main HEAD; then
+            echo "Already up to date with upstream."
+            echo "result=uptodate" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          upstream_sha=$(git rev-parse --short upstream/main)
+          echo "upstream=$upstream_sha" >> "$GITHUB_OUTPUT"
+          if ! git merge --no-edit -m "Merge upstream main ($upstream_sha) into custom" upstream/main; then
+            # Conflicts this fork expects, resolved the same way every time:
+            #   README.md          the fork's Korean README (upstream's lives on as README.en.md)
+            #   docs/brand/*       the ArtCraft trademarks stay removed
+            #   docs/**, ROADMAP.md, ATTRIBUTION.md   upstream's text
+            git diff --name-only --diff-filter=U | while read -r f; do
+              case "$f" in
+                README.md) git checkout --ours -- "$f"; git add -- "$f" ;;
+                docs/brand/*) git rm -q --cached -- "$f" 2>/dev/null; rm -f -- "$f" ;;
+                docs/*|ROADMAP.md|ATTRIBUTION.md) git checkout --theirs -- "$f"; git add -- "$f" ;;
+              esac
+            done
+            # Upstream's README edits belong in README.en.md, the copy of its README.
+            git show upstream/main:README.md > README.en.md && git add README.en.md
+            left=$(git diff --name-only --diff-filter=U)
+            if [ -n "$left" ]; then
+              git merge --abort
+              {
+                echo "conflicts<<EOF"
+                echo "$left"
+                echo "EOF"
+              } >> "$GITHUB_OUTPUT"
+              echo "result=conflict" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            git commit --no-edit -q
+          else
+            git show upstream/main:README.md > README.en.md
+            git add README.en.md
+            git diff --cached --quiet || git commit -q -m "Refresh README.en.md from upstream ($upstream_sha)"
+          fi
+          echo "result=merged" >> "$GITHUB_OUTPUT"
+
+      - uses: dtolnay/rust-toolchain@stable
+        if: steps.merge.outputs.result == 'merged'
+      - uses: Swatinem/rust-cache@v2
+        if: steps.merge.outputs.result == 'merged'
+      - name: System libraries for the desktop crates
+        if: steps.merge.outputs.result == 'merged'
+        run: sudo apt-get update -q && sudo apt-get install -yq libgtk-3-dev libxkbcommon-dev libwayland-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libssl-dev libdbus-1-dev pkg-config
+
+      - name: Check that it compiles
+        id: check
+        if: steps.merge.outputs.result == 'merged'
+        run: |
+          set -o pipefail
+          if cargo check --locked -p pdfcraft 2>&1 | tee check.log; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "errors<<EOF"
+              grep -E '^(error|  -->)' check.log | head -40
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Push (starts Fork release)
+        if: steps.merge.outputs.result == 'merged' && steps.check.outputs.ok == 'true'
+        run: git push origin HEAD:custom
+
+      - name: Report what needs a person
+        if: steps.merge.outputs.result == 'conflict' || steps.check.outputs.ok == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          UPSTREAM: ${{ steps.merge.outputs.upstream }}
+          CONFLICTS: ${{ steps.merge.outputs.conflicts }}
+          ERRORS: ${{ steps.check.outputs.errors }}
+        run: |
+          title="Upstream sync needs a hand"
+          {
+            echo "Merging upstream \`main\` ($UPSTREAM) into \`custom\` did not finish on its own, so nothing was pushed or released."
+            echo
+            if [ -n "$CONFLICTS" ]; then
+              echo "**Conflicting files:**"; echo; echo '```'; echo "$CONFLICTS"; echo '```'
+            fi
+            if [ -n "$ERRORS" ]; then
+              echo "**The merge does not compile:**"; echo; echo '```'; echo "$ERRORS"; echo '```'
+            fi
+            echo
+            echo "Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          } > body.md
+          existing=$(gh issue list --state open --search "in:title \"$title\"" --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file body.md
+          else
+            gh issue create --title "$title" --body-file body.md
+          fi
