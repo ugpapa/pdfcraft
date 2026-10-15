@@ -19,6 +19,7 @@ pdfcraft-model = { workspace = true }
 pdfcraft-platform = { workspace = true }
 egui = { workspace = true, features = ["bytemuck"] }
 egui_extras = { workspace = true }
+image = { version = "0.25", default-features = false, features = ["png"] }
 eframe = { workspace = true, features = ["default_fonts", "wgpu", "accesskit", "persistence", "links"] }
 serde = { workspace = true }
 serde_json = { workspace = true }
