@@ -80,7 +80,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          path: assets
+          path: release-files
           merge-multiple: true
       - name: Publish
         env:
@@ -101,4 +101,4 @@ jobs:
 
           언어 설정: 환경설정 → 화면 언어 → 한국어.
           EOF
-          gh release create "$tag" assets/* --target "$GITHUB_SHA" --title "PdfCraft ${version} 한국어 (${GITHUB_RUN_NUMBER})" --notes-file notes.md --latest
+          gh release create "$tag" release-files/* --target "$GITHUB_SHA" --title "PdfCraft ${version} 한국어 (${GITHUB_RUN_NUMBER})" --notes-file notes.md --latest
