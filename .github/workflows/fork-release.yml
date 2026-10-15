@@ -1,0 +1,104 @@
+# ugpapa/pdfcraft fork: build Windows and macOS packages and publish them as a GitHub release
+# on every push to `custom` (or by hand). Unsigned: Windows SmartScreen and macOS Gatekeeper
+# will warn on first launch (see the release notes).
+name: Fork release
+
+on:
+  push:
+    branches: [custom]
+    paths-ignore: ["**.md", "docs/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fork-release
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  PDFCRAFT_BUILD_LABEL: ko
+  # Same craft-fonts revision upstream releases embed (Japanese, Chinese, Arabic… UI faces).
+  CRAFT_FONTS_REF: 3d9ab3a132ed0eff457e424226a435a901da30d3
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: craft-fonts
+        shell: pwsh
+        run: |
+          git clone --filter=blob:none https://github.com/storytold/craft-fonts "$env:RUNNER_TEMP\craft-fonts"
+          git -C "$env:RUNNER_TEMP\craft-fonts" checkout $env:CRAFT_FONTS_REF
+          "CRAFT_FONTS_DIR=$env:RUNNER_TEMP\craft-fonts" | Out-File -Append $env:GITHUB_ENV
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: WiX
+        run: dotnet tool install --global wix --version 5.0.2
+      - name: Package
+        shell: pwsh
+        env:
+          DIST: ${{ github.workspace }}\dist\release
+        run: pwsh packaging/windows/package.ps1 -Arch x64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: |
+            dist/release/*.msi
+            dist/release/*.zip
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: craft-fonts
+        run: |
+          git clone --filter=blob:none https://github.com/storytold/craft-fonts "$RUNNER_TEMP/craft-fonts"
+          git -C "$RUNNER_TEMP/craft-fonts" checkout "$CRAFT_FONTS_REF"
+          echo "CRAFT_FONTS_DIR=$RUNNER_TEMP/craft-fonts" >> "$GITHUB_ENV"
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+      - uses: Swatinem/rust-cache@v2
+      - name: Package (universal, ad-hoc signed)
+        env:
+          DIST: ${{ github.workspace }}/dist/release
+        run: bash packaging/macos/package.sh --arch universal
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: |
+            dist/release/*.dmg
+            dist/release/*.zip
+
+  release:
+    needs: [windows, macos]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: assets
+          merge-multiple: true
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(awk '/^\[/{p=($0=="[workspace.package]");next} p&&$1=="version"{gsub(/[" ]/,"",$3);print $3;exit}' Cargo.toml)
+          tag="v${version}-ko.${GITHUB_RUN_NUMBER}"
+          cat > notes.md <<EOF
+          PdfCraft ${version} with a Korean interface (한국어), Hangul font fallback and the fork's icon.
+          Built from \`${GITHUB_SHA::8}\` on \`custom\`.
+
+          **Windows**: \`.msi\` installer or the portable \`.zip\`. The build is unsigned, so SmartScreen may say
+          "Windows protected your PC" — choose *More info → Run anyway*.
+
+          **macOS** (Apple Silicon and Intel): open the \`.dmg\` and drag PdfCraft to Applications. The app is not
+          notarized; on first launch run \`xattr -dr com.apple.quarantine /Applications/PdfCraft.app\` in Terminal,
+          or right-click the app → *Open*.
+
+          언어 설정: 환경설정 → 화면 언어 → 한국어.
+          EOF
+          gh release create "$tag" assets/* --target "$GITHUB_SHA" --title "PdfCraft ${version} 한국어 (${GITHUB_RUN_NUMBER})" --notes-file notes.md --latest
