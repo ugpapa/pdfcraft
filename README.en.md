@@ -1,9 +1,12 @@
-> **ugpapa/pdfcraft fork** — the `custom` branch is upstream `main` plus:
-> - a Korean interface (한국어 화면 언어), merged from upstream PR #2357, and the installed Hangul font fallback (Malgun Gothic / Apple SD Gothic Neo / Nanum Gothic), so Korean file names no longer render as boxes;
-> - a different flat app icon;
-> - the ArtCraft trademarks removed, as the upstream brand licence requires of forks.
->
-> Build: `cargo build --release -p pdfcraft`. Upstream: <https://github.com/storytold/pdfcraft>.
+<p align="center">
+  <a href="https://getartcraft.com/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="docs/brand/artcraft-logo-white.svg">
+      <img alt="ArtCraft" src="docs/brand/artcraft-logo.svg" width="200">
+    </picture>
+  </a>
+</p>
+
 
 <h1 align="center">PdfCraft</h1>
 
@@ -581,6 +584,7 @@ Forks and modified versions must remove them.
 <sub>Adobe, Photoshop, Illustrator, Premiere Pro, Lightroom, Acrobat, After Effects and InDesign are trademarks or registered trademarks of Adobe Inc. in the United States and/or other countries. PdfCraft is an independent, open-source project and is not affiliated with, sponsored by or endorsed by Adobe Inc.; these names are used only to describe the workflows it is compatible with.</sub>
 
 <p align="center">
+  <a href="https://getartcraft.com/"><img alt="ArtCraft" src="docs/brand/artcraft-mark.svg" width="28"></a><br>
   <sub>Made by the <a href="https://getartcraft.com/">ArtCraft</a> team and community.</sub>
 </p>
 
