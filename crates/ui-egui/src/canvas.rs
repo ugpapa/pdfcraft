@@ -2291,6 +2291,18 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
         Vec2::ZERO
     };
 
+    // Drawing a comment: the pointer in a band along any edge (or just past it) scrolls the view
+    // that way, so a point beyond what is shown can be reached without letting go of the tool.
+    let edge_delta = if unobstructed && matches!(view.comments.gesture, Some(comments::Gesture::Draw { .. })) {
+        let (pointer, dt) = ui.input(|i| (if i.pointer.any_down() { i.pointer.latest_pos() } else { i.pointer.hover_pos() }, i.stable_dt));
+        crate::autoscroll::edge_scroll(pointer, avail, dt)
+    } else {
+        Vec2::ZERO
+    };
+    if edge_delta != Vec2::ZERO {
+        ui.ctx().request_repaint();
+    }
+
     let content_w = view.content_width(info, avail.width());
     let rects = view.layout(info, content_w);
     // When not scrolling continuously, only one row is shown at a time: the current page, or the
@@ -2498,6 +2510,8 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
     let redact_mark = (app.redact_prefs.hover_fill, app.redact_prefs.opacity);
     let units = app.units;
     let allowed = doc.allows_annotation();
+    let can_copy = doc.allows_copying();
+    let mut copy_selected = false;
     let comments_hidden = doc.comments_hidden();
     let form = doc.form.clone();
     let can_fill = doc.allows_form_filling();
@@ -2543,9 +2557,9 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
         view.prepare.selected = None;
     }
     view.objects.prepare(doc, tool == QuickTool::EditText && can_modify, ui.ctx());
-    view.text_background.prepare(ui.ctx(), doc, view.line_editor.as_ref(), scale);
-    let added = doc.added.clone();
-    let doc_links = if tool == QuickTool::Link { doc.links.clone() } else { Vec::new() };
+    view.text_background.prepare(ui.ctx(), doc, view.line_editor.as_ref(), view.content.draft.as_ref(), scale);
+    let added = if editing_content { doc.added().to_vec() } else { Vec::new() };
+    let doc_links = if tool == QuickTool::Link { doc.links().to_vec() } else { Vec::new() };
     if editing_content {
         crate::content_ui::after_refresh(view, &added);
     } else {
@@ -2576,9 +2590,9 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
             ui.set_opacity(opacity);
         }
         // Middle-button auto-scroll, the keyboard, precise touchpad input (#759) and its glide
-        // (#531); positive y moves the content down. All scroll without easing, unlike egui's
-        // wheel default.
-        let delta = auto_delta - vec2(0.0, key_scroll) + precise_scroll + glide;
+        // (#531), and a drawing's edge scroll; positive y moves the content down. All scroll
+        // without easing, unlike egui's wheel default.
+        let delta = auto_delta + edge_delta - vec2(0.0, key_scroll) + precise_scroll + glide;
         if delta != Vec2::ZERO {
             ui.scroll_with_delta_animation(delta, egui::style::ScrollAnimation::none());
         }
@@ -2763,7 +2777,7 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
                     }
                 }
             }
-            view.text_background.paint(painter, &xf, i, view.line_editor.as_ref());
+            view.text_background.paint(painter, &xf, i, view.line_editor.as_ref(), view.content.draft.as_ref());
             if editing_content {
                 let page_tex = view.pages.get(&i).map(|p| p.tex.id());
                 view.move_background.paint(ui, painter, &xf, i, info, &view.content, page_tex);
@@ -2878,7 +2892,10 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
                 (o.consumed || field_tool.is_some(), false)
             } else {
                 use crate::forms_ui::FieldPointer;
-                let field = if tool == QuickTool::Select && !comments::select_grabs(ui, &pcx, view) {
+                let field = if tool == QuickTool::Select
+                    && !(editing_content && can_modify && crate::content_ui::select_grabs(ui, &xf, i, info, &added, view))
+                    && !comments::select_grabs(ui, &pcx, view)
+                {
                     crate::forms_ui::page_input(ui, &resp, &xf, i, info, &form, can_fill, view)
                 } else {
                     FieldPointer::Away
@@ -2898,9 +2915,46 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
             let image_owns_pointer = tool == QuickTool::EditText && crate::edit_text_ui::image_owns_pointer(ui, &xf, i, info, view);
             let on_objects =
                 !image_owns_pointer && tool == QuickTool::EditText && can_modify && crate::object_ui::page_input(ui, &resp, &xf, i, doc, view);
+            let lines = if matches!(tool, QuickTool::AddText | QuickTool::EditText) && can_modify {
+                let generation = doc.edit_generation();
+                match view.edit_lines.get(&i) {
+                    Some((g, l)) if *g == generation => l.clone(),
+                    _ => {
+                        let l = doc.text_blocks(i);
+                        view.edit_lines.insert(i, (generation, l.clone()));
+                        l
+                    }
+                }
+            } else {
+                Vec::new()
+            };
+            let over_source = tool == QuickTool::AddText
+                && pointer.is_some_and(|p| {
+                    !crate::content_ui::hits_added(&xf, info, i, &added, p)
+                        && lines.iter().any(|line| xf.user_rect(info, i, line.rect.map(|v| v as f32)).expand(2.0).contains(p))
+                });
+            let source_blocked = over_source && view.content.hold_blocked();
+            if over_source && resp.clicked() && !source_blocked {
+                if let Some(edit) = view.content.finish_draft(&added) {
+                    view.pending_edit = Some(edit);
+                }
+                view.content.selected = None;
+            }
             let on_content = !on_objects && editing_content && can_modify && {
-                crate::content_ui::page_input(ui, &resp, &xf, i, info, &added, tool == QuickTool::AddText, &text_style, view)
-                    || tool == QuickTool::AddText
+                source_blocked
+                    || crate::content_ui::page_input(
+                        ui,
+                        &resp,
+                        &xf,
+                        i,
+                        info,
+                        &added,
+                        tool == QuickTool::AddText && !over_source,
+                        matches!(tool, QuickTool::AddText | QuickTool::EditText),
+                        &text_style,
+                        view,
+                    )
+                    || tool == QuickTool::AddText && !over_source
             };
             // Added content owns its gesture; its source text must not queue a second edit.
             // Edit text & images boxes every paragraph and image whenever the tool is on. Only the
@@ -2908,16 +2962,8 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
             // input is blocked (another tab, a dialog, the window unfocused): the boxes stay drawn
             // instead of vanishing until the pointer comes back.
             let others_own_pointer = on_objects || on_content;
-            let on_edit_text = tool == QuickTool::EditText && can_modify && {
+            let on_edit_text = (tool == QuickTool::EditText || over_source) && can_modify && {
                 let generation = doc.edit_generation();
-                let lines = match view.edit_lines.get(&i) {
-                    Some((g, l)) if *g == generation => l.clone(),
-                    _ => {
-                        let l = doc.text_blocks(i);
-                        view.edit_lines.insert(i, (generation, l.clone()));
-                        l
-                    }
-                };
                 let images = match view.edit_images.get(&i) {
                     Some((g, l)) if *g == generation => l.clone(),
                     _ => {
@@ -2947,7 +2993,7 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
                 && resp.secondary_clicked()
                 && can_modify
                 && let Some(p) = pointer.filter(|p| xf.rect.contains(*p))
-                && let Some(l) = doc.links.iter().find(|l| l.page == i && crate::link_ui::screen_rect(&xf, info, i, l.rect).expand(2.0).contains(p))
+                && let Some(l) = doc.links().iter().find(|l| l.page == i && crate::link_ui::screen_rect(&xf, info, i, l.rect).expand(2.0).contains(p))
             {
                 view.links.context = Some((i, l.index));
             }
@@ -3208,8 +3254,10 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
                 let gesturing = view.comments.gesture.is_some() || freehand;
                 for a in info.annotations.iter().filter(|a| a.page == i && !gesturing) {
                     let sr = xf.user_rect(info, i, a.rect);
+                    let hidden = prefs.hide_empty_highlight_hover && a.subtype == "Highlight" && a.contents.as_deref().is_none_or(str::is_empty);
                     if sr.contains(p)
                         && hover_text.is_none()
+                        && !hidden
                         && let Some(text) = annotation_hover_text(a)
                     {
                         hover_text = Some((p, text));
@@ -3359,6 +3407,15 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
                 }
                 return;
             }
+            if view.comments.selected.is_none() {
+                let selected = view.selected_text().is_some_and(|t| !t.is_empty());
+                let key = crate::commands::shortcut_label(ui.ctx(), crate::commands::COPY);
+                if ui.add_enabled(can_copy && selected, egui::Button::new(tl!("Copy")).shortcut_text(key)).clicked() {
+                    copy_selected = true;
+                    ui.close();
+                }
+                ui.separator();
+            }
             // Over a picture (and no comment): Copy Image, as in Acrobat's page menu.
             let mut copy_image = None;
             if view.comments.selected.is_none()
@@ -3402,7 +3459,7 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
     view.viewport_screen = out.inner_rect;
     view.auto_scroll.paint(ui, avail);
     if unobstructed && matches!(tool, QuickTool::Select | QuickTool::ColumnSelect) {
-        selection_actions(ui, avail, view, info, prefs, allowed && !comments_hidden);
+        copy_selected |= selection_actions(ui, avail, view, info, prefs, allowed && !comments_hidden, can_copy);
     }
 
     // Collect all main-page demand, including cached surfaces, for byte admission later.
@@ -3671,8 +3728,17 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
     match image_action {
         Some(crate::edit_text_ui::ImageAction::Replace(page, index)) => app.replace_page_image_dialog(page, index),
         Some(crate::edit_text_ui::ImageAction::Save(page, index)) => app.save_page_image(page, index),
-        Some(crate::edit_text_ui::ImageAction::Copy(page, index)) => app.copy_page_image(page, index),
+        Some(crate::edit_text_ui::ImageAction::Copy(page, index)) => {
+            app.copy_page_image(page, index);
+        }
         Some(crate::edit_text_ui::ImageAction::CopyFile(page, index)) => app.copy_page_image_file(page, index),
+        Some(crate::edit_text_ui::ImageAction::Cut(page, image)) => {
+            app.views[index].image_selection = None;
+            app.cut_page_image(page, image);
+        }
+        Some(crate::edit_text_ui::ImageAction::Redact(page, index)) => app.redact_page_image(page, index),
+        Some(crate::edit_text_ui::ImageAction::Link(page, index)) => app.link_page_image(page, index),
+        Some(crate::edit_text_ui::ImageAction::Recognize(page)) => app.recognize_text_on_page(page),
         None => {}
     }
     if let Some(why) = refused {
@@ -3697,6 +3763,9 @@ pub fn document_area(app: &mut PdfCraftApp, index: usize, ui: &mut egui::Ui) {
     if let Some((name, action)) = app.views[index].forms.button.take() {
         run_button(app, index, &name, action);
     }
+    if copy_selected {
+        app.execute("edit.copy");
+    }
     quick_bar(app, avail, ui);
     if let Some((source, file, destination)) = remote_open {
         app.open_remote_link(source, file, destination);
@@ -3712,21 +3781,29 @@ enum SelectionAction {
 }
 
 /// Actions on an existing text selection, next to the selected words.
-fn selection_actions(ui: &mut egui::Ui, viewport: Rect, view: &mut DocView, info: &DocInfo, prefs: &comments::CommentPrefs, can_comment: bool) {
+fn selection_actions(
+    ui: &mut egui::Ui,
+    viewport: Rect,
+    view: &mut DocView,
+    info: &DocInfo,
+    prefs: &comments::CommentPrefs,
+    can_comment: bool,
+    can_copy: bool,
+) -> bool {
     if ui.input(|input| input.pointer.is_decidedly_dragging()) {
-        return;
+        return false;
     }
-    let Some(selection) = view.selection else { return };
-    let Some(text) = view.texts.get(&selection.page) else { return };
-    let Some(xf) = view.page_xform(selection.page) else { return };
-    let Some(last) = selection.rects(text).last().copied() else { return };
+    let Some(selection) = view.selection else { return false };
+    let Some(text) = view.texts.get(&selection.page) else { return false };
+    let Some(xf) = view.page_xform(selection.page) else { return false };
+    let Some(last) = selection.rects(text).last().copied() else { return false };
     let selected = selection.text(text);
     if selected.is_empty() {
-        return;
+        return false;
     }
     let rect = xf.view_rect(last);
     if !viewport.intersects(rect) {
-        return;
+        return false;
     }
     let x = rect.left().clamp(viewport.left() + 8.0, (viewport.right() - 520.0).max(viewport.left() + 8.0));
     let y = if rect.bottom() + 48.0 < viewport.bottom() { rect.bottom() + 6.0 } else { (rect.top() - 44.0).max(viewport.top() + 6.0) };
@@ -3745,18 +3822,17 @@ fn selection_actions(ui: &mut egui::Ui, viewport: Rect, view: &mut DocView, info
                         chosen = Some(action);
                     }
                 }
-                if ui.button(tl!("Copy")).clicked() {
+                if ui.add_enabled(can_copy, egui::Button::new(tl!("Copy"))).clicked() {
                     chosen = Some(SelectionAction::Copy);
                 }
             });
         });
     });
-    let Some(action) = chosen else { return };
+    let Some(action) = chosen else { return false };
     if let SelectionAction::Copy = action {
-        ui.ctx().copy_text(selected);
-        return;
+        return true;
     }
-    let Some((page, quads)) = view.selection_quads(info) else { return };
+    let Some((page, quads)) = view.selection_quads(info) else { return false };
     let last = quads.last().copied().unwrap_or_default();
     let at = [last[2].max(last[6]), last[1].max(last[3])];
     view.clear_selection();
@@ -3775,7 +3851,7 @@ fn selection_actions(ui: &mut egui::Ui, viewport: Rect, view: &mut DocView, info
         }
         SelectionAction::Markup(tool) => {
             // Every markup button carries a markup tool; anything else adds nothing.
-            let Some(kind) = tool.markup() else { return };
+            let Some(kind) = tool.markup() else { return false };
             view.pending_edit = Some(Edit::AddAnnotation(pdfcraft_engine::NewAnnotation {
                 page,
                 shape: pdfcraft_engine::Shape::TextMarkup { kind, quads },
@@ -3784,9 +3860,10 @@ fn selection_actions(ui: &mut egui::Ui, viewport: Rect, view: &mut DocView, info
                 author: prefs.author.clone(),
             }));
         }
-        // Copied above.
+        // Copy is dispatched through the app after the view borrow ends.
         SelectionAction::Copy => {}
     }
+    false
 }
 
 /// Run a push button's action (the ones that need no JavaScript engine).
