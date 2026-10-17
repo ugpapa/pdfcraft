@@ -49,9 +49,15 @@ jobs:
             #   README.md          the fork's Korean README (upstream's lives on as README.en.md)
             #   docs/brand/*       the ArtCraft trademarks stay removed
             #   docs/**, ROADMAP.md, ATTRIBUTION.md   upstream's text
+            #   ATTRIBUTION.toml   upstream's entries plus the fork's own (ko.tsv in, docs/brand out)
             git diff --name-only --diff-filter=U | while read -r f; do
               case "$f" in
                 README.md) git checkout --ours -- "$f"; git add -- "$f" ;;
+                ATTRIBUTION.toml)
+                  git show "$(git merge-base HEAD upstream/main)":"$f" > "$RUNNER_TEMP/attr.base"
+                  git show HEAD:"$f" > "$RUNNER_TEMP/attr.ours"
+                  git show upstream/main:"$f" > "$RUNNER_TEMP/attr.theirs"
+                  python3 .github/fork/merge-attribution.py "$RUNNER_TEMP/attr.base" "$RUNNER_TEMP/attr.ours" "$RUNNER_TEMP/attr.theirs" "$f" && git add -- "$f" ;;
                 docs/brand/*) git rm -q --cached -- "$f" 2>/dev/null; rm -f -- "$f" ;;
                 docs/*|ROADMAP.md|ATTRIBUTION.md) git checkout --theirs -- "$f"; git add -- "$f" ;;
               esac
@@ -108,7 +114,8 @@ jobs:
       - name: Report what needs a person
         if: steps.merge.outputs.result == 'conflict' || steps.check.outputs.ok == 'false'
         env:
-          GH_TOKEN: ${{ github.token }}
+          # The default token's createIssue is refused here ("Resource not accessible by integration").
+          GH_TOKEN: ${{ secrets.SYNC_TOKEN }}
           UPSTREAM: ${{ steps.merge.outputs.upstream }}
           CONFLICTS: ${{ steps.merge.outputs.conflicts }}
           ERRORS: ${{ steps.check.outputs.errors }}
