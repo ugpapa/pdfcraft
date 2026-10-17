@@ -96,6 +96,9 @@ jobs:
         if: steps.merge.outputs.result == 'merged'
         run: |
           set -o pipefail
+          # ATTRIBUTION.md is generated from ATTRIBUTION.toml; a merge can leave it behind.
+          cargo xtask assets --write || true
+          git diff --quiet -- ATTRIBUTION.md || git commit -q -m "Regenerate ATTRIBUTION.md" -- ATTRIBUTION.md
           if cargo check --locked -p pdfcraft 2>&1 | tee check.log; then
             echo "ok=true" >> "$GITHUB_OUTPUT"
           else
@@ -133,6 +136,8 @@ jobs:
             echo
             echo "Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
           } > body.md
+          # The run summary has the report even if the issue below cannot be filed.
+          cat body.md >> "$GITHUB_STEP_SUMMARY"
           existing=$(gh issue list --state open --search "in:title \"$title\"" --json number --jq '.[0].number // empty')
           if [ -n "$existing" ]; then
             gh issue comment "$existing" --body-file body.md

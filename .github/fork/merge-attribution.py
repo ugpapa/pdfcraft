@@ -38,6 +38,19 @@ def main():
     removed = paths(base_blocks) - paths(our_blocks)
     result = [(p, b) for p, b in result if p not in removed]
 
+    # An entry only the fork changed (e.g. the fork's own app icon) keeps the fork's version.
+    base_by_path, our_by_path = dict(base_blocks), dict(our_blocks)
+
+    def keep(path, theirs_block):
+        base_block, our_block = base_by_path.get(path), our_by_path.get(path)
+        if base_block is None or our_block is None:
+            return theirs_block
+        if our_block.strip() != base_block.strip() and theirs_block.strip() == base_block.strip():
+            return our_block.rstrip("\n") + "\n\n"
+        return theirs_block
+
+    result = [(p, keep(p, b)) for p, b in result]
+
     base_paths = paths(base_blocks)
     for i, (path, block) in enumerate(our_blocks):
         if path is None or path in base_paths or path in paths(result):
